@@ -1,0 +1,16 @@
+*.vsidx
+*.cs
+*.cs
+*.cache
+*.sqlite
+*.cache
+*.editorconfig
+*.vsidx
+*.json
+*.cs
+*.cache
+*.cs
+/CinemaSyncServer/obj
+/CinemaSyncServer/obj
+/CinemaSyncServer/.vs
+CinemaSyncServer/obj/Debug/net6.0/CinemaSyncServer.AssemblyInfoInputs.cache
