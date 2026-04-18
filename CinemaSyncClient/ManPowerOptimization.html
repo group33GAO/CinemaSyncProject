@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CinemaSync</title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- The link above is the connection to BOOTSTRAP servers. -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+     <!-- The link above is the connection to fontAwesome, a libary of icons to use. -->
+    <link rel="stylesheet" href="CSS/Styles.css" />
+    <!-- The link above is the connection to our style sheet in order to edit and use css. -->
+  </head>
+
+
+  <body class="bg-dark text-light"> <!-- Bootstrap sets the foundation theme. -->
+
+    <!-- The NAV deals with the going back button -->
+    <nav class="navbar navbar-dark bg-dark-surface border-bottom border-secondary sticky-top mb-4">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            
+            <a href="Pages/Dashboard.html" class="btn btn-link text-light p-0" aria-label="Go back to Dashboard">
+                <i class="fa-solid fa-arrow-left fa-lg"></i>
+            </a>
+            
+            <div class="text-center">
+    <h5 class="m-0 fw-bold">ManPower Optimization</h5>
+    <small class="text-teal fw-bold shadow-sm" id="navBranchDisplay"></small>
+</div>
+            
+            <a href="#" class="btn btn-link text-danger p-0 btn-logout" title="Log Out" aria-label="Log Out">
+                <i class="fa-solid fa-power-off fa-lg"></i>
+            </a>
+        </div>
+    </nav>
+
+
+    <main>
+    <!-- ###################################################
+          Here you pick and manage the criteria for the employee selection amount. 
+         ###################################################  -->
+    <section id="manpowerScreen" class="screen container mt-3">
+    
+    <div class="card bg-surface border-0 p-4 mb-4" id="manpowerFormCard">
+        <h5 class="fw-bold mb-4 text-green">
+            <i class="fa-solid fa-users-gear me-2"></i>Manpower Optimization
+        </h5>
+        
+        <div class="row g-3">
+            
+            <div class="col-md-6">
+                <label class="form-label small text-muted">1. Day Type</label>
+                <select id="optDayType" class="form-select">
+                    <option value="weekday">Regular Weekday</option>
+                    <option value="weekend">Weekend (Fri-Sat)</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label small text-muted">2. Shift</label>
+                <select id="optShift" class="form-select">
+                    <option value="morning">Morning Shift</option>
+                    <option value="afternoon">Afternoon Shift</option>
+                    <option value="night">Night Shift</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label small text-muted">3. Weather</label>
+                <select id="optWeather" class="form-select">
+                    <option value="clear">☀️ Clear / Sunny</option>
+                    <option value="cloudy">☁️ Cloudy</option>
+                    <option value="rainy">🌧️ Rainy / Stormy</option>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label small text-muted">4. Nearby Events</label>
+                <select id="optEvents" class="form-select">
+                    <option value="none">No Special Events</option>
+                    <option value="minor">Small Local Event</option>
+                    <option value="major">Major Concert/Game</option>
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label small text-muted">5. Holiday Status</label>
+                <div class="toggle-container">
+                    <span class="text-white small"><i class="fa-solid fa-umbrella-beach text-teal me-2"></i>Is it a Holiday?</span>
+                    <div class="form-check form-switch m-0">
+                        <input class="form-check-input" type="checkbox" id="optHoliday">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label small text-muted">6. Premiere Status</label>
+                <div class="toggle-container">
+                    <span class="text-white small"><i class="fa-solid fa-star text-warning me-2"></i>Movie Premiere?</span>
+                    <div class="form-check form-switch m-0">
+                        <input class="form-check-input" type="checkbox" id="optPremiere">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 spacing-fix">
+                <label class="form-label small text-muted d-flex justify-content-between">
+                    <span>7. Pre-Sold Tickets (Occupancy)</span>
+                    <span id="sliderValue" class="text-green fw-bold">0%</span>
+                </label>
+                <input type="range" class="form-range" id="optPreSales" min="0" max="100" step="10" value="0">
+            </div>
+
+        </div>
+
+        <button class="btn w-100 fw-bold mt-4 p-3" id="btnCalcManpower" style="background-color: #4ade80; color: #121212; border-radius: 8px;" aria-label="Run Model">
+            <i class="fa-solid fa-microchip me-2"></i> Run Optimization Model
+        </button>
+    </div>
+
+    <!-- ###################################################
+          After you run the model - it spits out the amount of workers needed by position.
+         ###################################################  -->
+
+    <div id="manpowerResults" class="d-none">
+        <div class="result-card text-center">
+            
+            <h5 class="text-muted text-uppercase letter-spacing-2 mb-3">Total Staff Required</h5>
+            
+            <div class="display-1 result-number mb-0" id="resultStaffCount">--</div>
+            <div class="text-green small mb-4">Total Employees on Shift</div>
+            
+            <hr class="border-secondary opacity-25 my-4">
+            
+            <div class="row g-3">
+                
+                <div class="col-6 col-md-3">
+                    <div class="role-card">
+                        <div class="role-icon"><i class="fa-solid fa-burger"></i></div>
+                        <div class="role-title">Snack Diner</div>
+                        <div class="role-value" id="resSnacks">0</div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <div class="role-card">
+                        <div class="role-icon"><i class="fa-solid fa-broom"></i></div>
+                        <div class="role-title">Cleaners</div>
+                        <div class="role-value" id="resCleaners">0</div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <div class="role-card">
+                        <div class="role-icon"><i class="fa-solid fa-ticket"></i></div>
+                        <div class="role-title">Cashiers</div>
+                        <div class="role-value" id="resCashiers">0</div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <div class="role-card">
+                        <div class="role-icon"><i class="fa-solid fa-video"></i></div>
+                        <div class="role-title">Screening</div>
+                        <div class="role-value" id="resScreening">0</div>
+                    </div>
+                </div>
+
+            </div>
+            </div>
+
+            <!-- ###################################################
+          Here you can re-adjust and go back to the first page of criteria.
+         ###################################################  -->
+        <button class="btn btn-outline-light w-100 mt-3 py-2" id="btnResetManpower" aria-label="Adjust Criteria">
+            <i class="fa-solid fa-rotate-left me-2"></i> Adjust Criteria
+        </button>
+    </div>
+
+</section>
+</main>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     <!-- The link above is the connection to jqeury so we can use jqeury functions. -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+     <!-- The link above is the connection to bootstrap JS so we can use Modals and Dropdowns ETC -->
+    <script src="JS/JavaScript.js"></script>
+    <script>$(document).ready(function(){ if (!requireLogin()) return; });</script>
+  </body>
+</html>
