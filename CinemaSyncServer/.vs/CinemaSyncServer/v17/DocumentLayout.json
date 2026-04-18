@@ -3,6 +3,14 @@
   "WorkspaceRootPath": "C:\\Users\\oralp\\OneDrive\\Desktop\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D3\\CinemaSyncGIT\\CinemaSyncProject\\CinemaSyncServer\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{51F986FF-BE7F-4E56-B035-B2B7214967EF}|CinemaSyncServer.csproj|c:\\users\\oralp\\onedrive\\desktop\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D3\\cinemasyncgit\\cinemasyncproject\\cinemasyncserver\\controllers\\inventorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{51F986FF-BE7F-4E56-B035-B2B7214967EF}|CinemaSyncServer.csproj|solutionrelative:controllers\\inventorycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{51F986FF-BE7F-4E56-B035-B2B7214967EF}|CinemaSyncServer.csproj|c:\\users\\oralp\\onedrive\\desktop\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D3\\cinemasyncgit\\cinemasyncproject\\cinemasyncserver\\controllers\\branchescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{51F986FF-BE7F-4E56-B035-B2B7214967EF}|CinemaSyncServer.csproj|solutionrelative:controllers\\branchescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{51F986FF-BE7F-4E56-B035-B2B7214967EF}|CinemaSyncServer.csproj|c:\\users\\oralp\\onedrive\\desktop\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D3\\cinemasyncgit\\cinemasyncproject\\cinemasyncserver\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{51F986FF-BE7F-4E56-B035-B2B7214967EF}|CinemaSyncServer.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -19,6 +27,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "InventoryController.cs",
+              "DocumentMoniker": "C:\\Users\\oralp\\OneDrive\\Desktop\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D3\\CinemaSyncGIT\\CinemaSyncProject\\CinemaSyncServer\\Controllers\\InventoryController.cs",
+              "RelativeDocumentMoniker": "Controllers\\InventoryController.cs",
+              "ToolTip": "C:\\Users\\oralp\\OneDrive\\Desktop\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D3\\CinemaSyncGIT\\CinemaSyncProject\\CinemaSyncServer\\Controllers\\InventoryController.cs",
+              "RelativeToolTip": "Controllers\\InventoryController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAqwAoAAAAdAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-18T19:08:35.476Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BranchesController.cs",
+              "DocumentMoniker": "C:\\Users\\oralp\\OneDrive\\Desktop\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D3\\CinemaSyncGIT\\CinemaSyncProject\\CinemaSyncServer\\Controllers\\BranchesController.cs",
+              "RelativeDocumentMoniker": "Controllers\\BranchesController.cs",
+              "ToolTip": "C:\\Users\\oralp\\OneDrive\\Desktop\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D3\\CinemaSyncGIT\\CinemaSyncProject\\CinemaSyncServer\\Controllers\\BranchesController.cs",
+              "RelativeToolTip": "Controllers\\BranchesController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-18T19:08:29.43Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\oralp\\OneDrive\\Desktop\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\\u05E9\u05E0\u05D4 \u05D3\\CinemaSyncGIT\\CinemaSyncProject\\CinemaSyncServer\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
