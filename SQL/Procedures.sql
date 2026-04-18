@@ -173,3 +173,97 @@ BEGIN
     SELECT @@ROWCOUNT AS RowsAffected;
 END;
 GO
+
+-- =========================================================
+-- Products
+-- =========================================================
+
+CREATE OR ALTER PROCEDURE SP_Products_GetAll
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT ProductId, Barcode, ProductName, UnitsPerPackage, Supplier,
+           SupplierMinOrder, DefaultRequiredStock, Notes, IsActive
+    FROM Products
+    WHERE IsActive = 1
+    ORDER BY
+        CASE WHEN Supplier = N'החברה המרכזית' THEN 0 ELSE 1 END,
+        Supplier,
+        ProductName;
+END;
+GO
+
+-- =========================================================
+-- Branch Inventory
+-- =========================================================
+
+CREATE OR ALTER PROCEDURE SP_BranchInventory_GetByBranch
+    @BranchCode INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT
+        p.ProductId,
+        p.Barcode,
+        p.ProductName,
+        p.UnitsPerPackage,
+        p.Supplier,
+        p.SupplierMinOrder,
+        p.Notes,
+        ISNULL(bi.CurrentStock, 0)                                      AS CurrentStock,
+        ISNULL(bi.RequiredStock, p.DefaultRequiredStock)                AS RequiredStock,
+        bi.LastUpdated
+    FROM Products p
+    LEFT JOIN BranchInventory bi
+        ON bi.ProductId = p.ProductId AND bi.BranchCode = @BranchCode
+    WHERE p.IsActive = 1
+    ORDER BY
+        CASE WHEN p.Supplier = N'החברה המרכזית' THEN 0 ELSE 1 END,
+        p.Supplier,
+        p.ProductName;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE SP_BranchInventory_UpdateStock
+    @BranchCode   INT,
+    @ProductId    INT,
+    @CurrentStock INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (SELECT 1 FROM BranchInventory WHERE BranchCode = @BranchCode AND ProductId = @ProductId)
+    BEGIN
+        UPDATE BranchInventory
+        SET CurrentStock = @CurrentStock,
+            LastUpdated  = SYSDATETIME()
+        WHERE BranchCode = @BranchCode AND ProductId = @ProductId;
+    END
+    ELSE
+    BEGIN
+        INSERT INTO BranchInventory (BranchCode, ProductId, CurrentStock, LastUpdated)
+        VALUES (@BranchCode, @ProductId, @CurrentStock, SYSDATETIME());
+    END
+
+    SELECT @@ROWCOUNT AS RowsAffected;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE SP_BranchInventory_SeedForBranch
+    @BranchCode INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO BranchInventory (BranchCode, ProductId, CurrentStock)
+    SELECT @BranchCode, p.ProductId, 0
+    FROM Products p
+    WHERE p.IsActive = 1
+      AND NOT EXISTS (
+          SELECT 1 FROM BranchInventory bi
+          WHERE bi.BranchCode = @BranchCode AND bi.ProductId = p.ProductId
+      );
+
+    SELECT @@ROWCOUNT AS RowsAffected;
+END;
+GO

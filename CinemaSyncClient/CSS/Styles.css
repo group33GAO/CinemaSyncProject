@@ -120,18 +120,182 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
 
 /* --- 6. SPECIFIC MODULE STYLES (Kept & Upgraded) --- */
 
+/* Inventory page layout:
+   - Nav sticks to top (inherits Bootstrap sticky-top)
+   - Whole page scrolls naturally
+   - Sync button floats fixed at the bottom of the viewport
+   - Body reserves padding-bottom so the last card isn't hidden under the button */
+body.inventory-page {
+    padding-bottom: 70px;
+}
+
+/* Sticky search bar below the nav.
+   Wrapper is transparent; the visual frame lives on .search-inner
+   so the dark panel matches the input's width instead of spanning the row. */
+.inventory-page .search-wrapper {
+    position: sticky;
+    top: 68px; /* sits just below the nav */
+    z-index: 1025;
+    direction: rtl;
+    padding: 12px 0;
+    margin-bottom: 1rem;
+    pointer-events: none;  /* let clicks in the empty 2/3 pass through */
+}
+.inventory-page .search-wrapper > .search-inner {
+    pointer-events: auto;  /* but the actual search still catches clicks */
+}
+.inventory-page .search-inner {
+    position: relative;
+    width: 33%;
+    min-width: 220px;
+    max-width: 380px;
+    margin-left: auto;
+    margin-right: 0;
+}
+.inventory-page .search-input {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.45) !important;
+    border: 1px solid var(--glass-border) !important;
+    color: #ffffff !important;
+    border-radius: 12px !important;
+    padding: 10px 44px 10px 40px; /* space for icon (right) and clear btn (left) */
+    font-size: 1rem;
+    transition: all 0.25s ease;
+    direction: rtl;
+    text-align: right;
+}
+.inventory-page .search-input:focus {
+    outline: none;
+    border-color: var(--primary-teal) !important;
+    box-shadow: var(--neon-glow);
+}
+.inventory-page .search-input::placeholder {
+    color: #9ca3af;
+}
+/* Hide the browser's native clear (✕) button on type="search" inputs */
+.inventory-page .search-input::-webkit-search-cancel-button,
+.inventory-page .search-input::-webkit-search-decoration,
+.inventory-page .search-input::-webkit-search-results-button,
+.inventory-page .search-input::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+}
+.inventory-page .search-input::-ms-clear {
+    display: none;
+    width: 0;
+    height: 0;
+}
+.inventory-page .search-wrapper .search-icon {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    transform: translateY(-50%);
+    color: var(--primary-teal);
+    pointer-events: none;
+    font-size: 0.95rem;
+}
+.inventory-page .btn-clear-search {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    color: #cbd5e1;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+.inventory-page .btn-clear-search:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+.inventory-page nav.navbar {
+    margin-bottom: 0 !important;
+}
+.inventory-page #inventoryContainer {
+    max-height: none !important;
+    overflow-y: visible !important;
+    padding-right: 0 !important;
+    padding-bottom: 0 !important;
+}
+body.inventory-page button#btnSync {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    right: auto !important;
+    transform: translateX(-50%);
+    width: 92% !important;
+    max-width: 420px;
+    z-index: 1020;
+    margin-top: 0 !important;
+    padding: 0.65rem 1rem !important;
+    font-size: 0.95rem !important;
+    line-height: 1.4 !important;
+    background: linear-gradient(135deg, #00CED1 0%, #009ea1 100%) !important;
+    background-color: #009ea1 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 206, 209, 0.4);
+}
+/* Match the card column widths at each breakpoint
+   (col-md-6 = ~50%, col-xl-4 = ~33%) */
+@media (min-width: 768px) {
+    body.inventory-page button#btnSync {
+        width: 48% !important;
+    }
+}
+@media (min-width: 1200px) {
+    body.inventory-page button#btnSync {
+        width: 32% !important;
+    }
+}
+
+/* Frosted-glass surface utility (matches the app aesthetic - not solid black) */
+.bg-dark-surface {
+    background-color: var(--glass-bg) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+.inventory-page nav.navbar.sticky-top {
+    background-color: var(--glass-bg) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    z-index: 1030;
+}
+
 /* Inventory Scrollbar */
 #inventoryContainer {
-    max-height: 60vh; 
-    overflow-y: auto; 
-    padding-right: 10px; 
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 14px;
     padding-bottom: 20px;
+    scrollbar-width: auto;                  /* Firefox: show standard-width bar */
+    scrollbar-color: #2dd4bf rgba(255, 255, 255, 0.06); /* Firefox: thumb + track */
 }
-#inventoryContainer::-webkit-scrollbar { width: 6px; }
-#inventoryContainer::-webkit-scrollbar-track { background: transparent; }
-#inventoryContainer::-webkit-scrollbar-thumb { 
-    background: #333; 
-    border-radius: 10px; 
+#inventoryContainer::-webkit-scrollbar {
+    width: 14px;
+}
+#inventoryContainer::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    margin: 4px 0;
+}
+#inventoryContainer::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #0f766e, #2dd4bf);
+    border-radius: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.4); /* creates a subtle inset gap */
+    box-shadow: 0 0 6px rgba(45, 212, 191, 0.35);
+}
+#inventoryContainer::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #0f766e, #5eead4);
+    box-shadow: 0 0 10px rgba(45, 212, 191, 0.6);
 }
 
 /* Inventory Items */
@@ -152,15 +316,105 @@ h1, h2, h3, h4, h5, h6, .fw-bold {
     color: #aaa;
 }
 .category-header {
-    color: var(--primary-teal);
-    border-bottom: 1px solid var(--glass-border);
-    margin-top: 30px;
-    margin-bottom: 15px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    direction: rtl;
+    display: block;
+    width: fit-content;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff !important;
+    padding: 8px 18px;
+    background: linear-gradient(135deg, #0f766e, #2dd4bf);
+    border-radius: 8px;
+    margin: 32px 0 16px auto;
+    box-shadow: 0 2px 8px rgba(45, 212, 191, 0.25);
+    letter-spacing: 0.5px;
+}
+.category-header::before {
+    content: "\f1ad";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-inline-end: 10px;
+}
+
+/* Product note (appears under the stock inputs on each card) */
+.product-note {
+    direction: rtl;
+    text-align: right;
+    background-color: rgba(45, 212, 191, 0.08);
+    border-right: 3px solid #2dd4bf;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin: 10px 0;
+    font-size: 0.9rem;
+    color: #cbd5e1;
+}
+.product-note::before {
+    content: "ⓘ ";
+    color: #2dd4bf;
+    margin-inline-end: 6px;
+    font-weight: bold;
+}
+/* Invisible placeholder - reserves the same vertical space so the
+   barcode line sits at the same height across all cards. */
+.product-note--empty {
+    visibility: hidden;
+}
+
+/* Product name - force RTL so Hebrew reads correctly */
+.product-name {
+    direction: rtl;
+    text-align: right;
+    unicode-bidi: plaintext;
+}
+
+/* Stock row (נוכחי / נדרש / חסר) - RTL so נוכחי is on the right */
+.inventory-card .stock-row {
+    direction: rtl;
+    text-align: right;
 }
 .label-standard { color: var(--primary-teal) !important; font-weight: bold; text-transform: uppercase; font-size: 0.85rem;}
 .value-standard { color: white !important; font-size: 1.4rem; font-weight: bold;}
+
+/* Inventory Card - shadow, status border, hover */
+.inventory-card {
+    position: relative;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35) !important;
+    border-right: 4px solid #6b7280 !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-right-color 0.2s ease;
+}
+.inventory-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5) !important;
+}
+.inventory-card.stock-below { border-right-color: #ef4444 !important; }
+.inventory-card.stock-ok    { border-right-color: #4ade80 !important; }
+.inventory-card.stock-empty { border-right-color: #6b7280 !important; }
+
+/* Barcode display - labeled, monospace value */
+.barcode-display {
+    direction: rtl;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 0.85rem;
+}
+.barcode-display i {
+    color: var(--primary-teal);
+    font-size: 1rem;
+}
+.barcode-label {
+    color: #9ca3af;
+    font-weight: 500;
+}
+.barcode-value {
+    color: #ffffff;
+    font-family: 'Courier New', Consolas, monospace;
+    letter-spacing: 0.5px;
+}
 
 /* Manpower Optimization Cards */
 .role-card {

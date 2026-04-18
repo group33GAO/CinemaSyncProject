@@ -15,11 +15,12 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <!-- The link above is the connection to fontAwesome, a libary of icons to use. -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
     <link rel="stylesheet" href="CSS/Styles.css" />
     <!-- The link above is the connection to our style sheet in order to edit and use css. -->
   </head>
   
-  <body class="bg-dark text-light"> <!-- Bootstrap sets the foundation theme. -->
+  <body class="bg-dark text-light inventory-page"> <!-- Bootstrap sets the foundation theme. -->
 
     <!-- ###################################################
           The NAV deals with the going back button
@@ -47,12 +48,19 @@
      <!-- ###################################################
           The NAV deals with the going back button
          ###################################################  -->
-    <section id="inventoryScreen" class="screen">
-      <div class="d-flex justify-content-between align-items-end mb-4">
-        <h4 class="fw-bold m-0">Warehouse A</h4>
+    <section id="inventoryScreen" class="screen p-3">
+      <div class="search-wrapper">
+        <div class="search-inner">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="search" id="inventorySearch" class="search-input"
+                 placeholder="חיפוש מוצר, ספק או ברקוד..." dir="rtl" autocomplete="off" />
+          <button type="button" class="btn-clear-search" id="btnClearSearch" aria-label="נקה">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
       </div>
 
-      <div class="inventory-list d-grid gap-3" id="inventoryContainer"></div>
+      <div class="inventory-list" id="inventoryContainer"></div>
 
       <button class="btn btn-teal w-100 mt-4 fw-bold p-3" id="btnSync" aria-label="Sync to BIGGERPICTURE">
         <i class="fa-solid fa-arrows-rotate me-2"></i> Sync to BIGGERPICTURE
@@ -90,7 +98,8 @@
     <!-- The link above is the connection to jqeury so we can use jqeury functions. -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- The link above is the connection to bootstrap JS so we can use Modals and Dropdowns ETC -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="JS/JavaScript.js"></script>
-    <script>$(document).ready(function(){ if (!requireLogin()) return; });</script>
+    <script src="JS/inventoryCount.js"></script>
   </body>
 </html>
