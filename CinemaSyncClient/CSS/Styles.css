@@ -1,0 +1,404 @@
+/* --- CINEMASYNC PREMIUM THEME --- */
+:root {
+    --bg-dark: #050505;       /* Deep Black */
+    --bg-surface: #121212;    /* Card Surface */
+    --primary-teal: #00CED1;
+    --glass-bg: rgba(30, 30, 30, 0.6); /* See-through dark layer */
+    --glass-border: rgba(255, 255, 255, 0.08); /* Subtle white edge */
+    --neon-glow: 0 0 15px rgba(0, 206, 209, 0.25);
+}
+
+/* --- 1. GLOBAL ATMOSPHERE --- */
+body {
+    background-color: var(--bg-dark) !important;
+    /* Subtle background glow for depth */
+    background-image: radial-gradient(circle at 15% 50%, rgba(0, 206, 209, 0.08) 0%, transparent 25%),
+                      radial-gradient(circle at 85% 30%, rgba(147, 51, 234, 0.05) 0%, transparent 25%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #ffffff !important;
+    min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6, .fw-bold {
+    color: #ffffff !important;
+    letter-spacing: -0.5px; /* Modern tight spacing */
+}
+
+.text-muted, .small {
+    color: #9ca3af !important; /* Lighter grey for readability */
+}
+
+/* --- 2. LOGO FIX (PERFECT CIRCLE) --- */
+.logo-circle {
+    width: 140px; 
+    height: 140px;
+    background-color: #ffffff; 
+    border-radius: 50%; /* Force Perfect Circle */
+    margin: 0 auto 25px auto; 
+    overflow: hidden; /* Clips the square corners of your JPG */
+    box-shadow: 0 0 40px rgba(0, 206, 209, 0.3); /* Teal Glow */
+    border: 3px solid var(--primary-teal); 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0; /* REMOVED PADDING so image fills the circle */
+}
+
+.logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures image fills the circle without stretching */
+}
+
+/* --- 3. GLASSMORPHISM CARDS (The "Sleek" Look) --- */
+/* Applies to all cards, modals, and surfaces */
+.card, .bg-surface, .modal-content, .role-card, .picker-container {
+    background-color: var(--glass-bg) !important;
+    backdrop-filter: blur(12px); /* The "Frosted" Effect */
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 24px !important; /* Big modern curves */
+    box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.3);
+}
+
+/* --- 4. MODERN INPUTS (Pills) --- */
+.form-control, .form-select, input {
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid var(--glass-border) !important;
+    color: #ffffff !important;
+    border-radius: 12px !important;
+    padding: 12px 16px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    border-color: var(--primary-teal) !important;
+    box-shadow: var(--neon-glow) !important;
+    transform: translateY(-1px);
+}
+
+.input-group-text {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border-color: var(--glass-border) !important;
+    color: #aaa !important;
+}
+
+/* --- 5. BUTTONS (Premium Feel) --- */
+.btn {
+    border-radius: 50px !important; /* Full Pill Shape */
+    padding: 10px 24px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.btn-teal {
+    background: linear-gradient(135deg, #00CED1 0%, #009ea1 100%) !important;
+    color: #050505 !important;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 206, 209, 0.3);
+}
+
+.btn-teal:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 206, 209, 0.5);
+}
+
+.btn-surface {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white !important;
+}
+
+.btn-surface:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: white;
+    color: #fff !important;
+    transform: translateY(-2px);
+}
+
+/* --- 6. SPECIFIC MODULE STYLES (Kept & Upgraded) --- */
+
+/* Inventory Scrollbar */
+#inventoryContainer {
+    max-height: 60vh; 
+    overflow-y: auto; 
+    padding-right: 10px; 
+    padding-bottom: 20px;
+}
+#inventoryContainer::-webkit-scrollbar { width: 6px; }
+#inventoryContainer::-webkit-scrollbar-track { background: transparent; }
+#inventoryContainer::-webkit-scrollbar-thumb { 
+    background: #333; 
+    border-radius: 10px; 
+}
+
+/* Inventory Items */
+.supplier-badge {
+    background-color: rgba(255,255,255,0.1) !important;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    font-weight: 500;
+    color: #fff !important;
+}
+
+.box-last-count {
+    background-color: rgba(0,0,0,0.3);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    padding: 8px;
+    font-family: monospace; 
+    color: #aaa;
+}
+.category-header {
+    color: var(--primary-teal);
+    border-bottom: 1px solid var(--glass-border);
+    margin-top: 30px;
+    margin-bottom: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+.label-standard { color: var(--primary-teal) !important; font-weight: bold; text-transform: uppercase; font-size: 0.85rem;}
+.value-standard { color: white !important; font-size: 1.4rem; font-weight: bold;}
+
+/* Manpower Optimization Cards */
+.role-card {
+    /* Inherits Glass Style from .card above */
+    text-align: center;
+    padding: 20px;
+    transition: transform 0.2s;
+}
+.role-card:hover {
+    border-color: var(--primary-teal) !important;
+    transform: translateY(-3px);
+}
+.role-icon {
+    color: #4ade80; /* Green */
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+.role-title { color: #b0b0b0; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+.role-value { color: #fff; font-size: 1.5rem; font-weight: bold; }
+
+/* Custom Toggle Switches */
+.toggle-container {
+    background-color: rgba(0,0,0,0.3);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.form-check-input:checked {
+    background-color: #4ade80;
+    border-color: #4ade80;
+    box-shadow: 0 0 10px rgba(74, 222, 128, 0.4);
+}
+.form-range { height: 6px; background-color: #333; border-radius: 5px; }
+.form-range::-webkit-slider-thumb { background: #4ade80; width: 18px; height: 18px; margin-top: -6px; }
+
+/* Date Picker Overlay (Invisible Click) */
+.picker-container { position: relative !important; overflow: hidden; cursor: pointer; }
+.picker-overlay {
+    position: absolute !important;
+    top: 0; left: 0; width: 100% !important; height: 100% !important;
+    opacity: 0; cursor: pointer; z-index: 10;
+}
+
+/* --- DRAG & DROP SCHEDULE STUDIO (Fixed Layout) --- */
+
+/* The Main Container (Side-by-Side Wrapper) */
+.schedule-workspace {
+    display: flex;
+    flex-direction: row; /* Forces side-by-side */
+    flex-wrap: nowrap;   /* Prevents them from stacking "one after the other" */
+    gap: 24px;
+    height: 65vh;        /* Dynamic height: takes up 65% of the screen */
+    min-height: 500px;
+    align-items: stretch;
+    margin-bottom: 20px;
+}
+
+/* Left Panel: Movie Library */
+.movie-library {
+    width: 260px;        /* Fixed width */
+    flex-shrink: 0;      /* Prevent shrinking */
+    background-color: rgba(20, 20, 20, 0.4);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 20px;
+    
+    /* Layout for Internal Scrolling */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Stops content from spilling out */
+}
+
+/* The Container holding the Draggable Chips */
+#movieDraggables {
+    flex-grow: 1;        /* Fills remaining space */
+    overflow-y: auto;    /* Enables scrollbar INSIDE the box */
+    padding-right: 5px;  /* Space for scrollbar */
+    margin-top: 10px;
+}
+
+/* Draggable Items (Chips) */
+.draggable-item {
+    background: linear-gradient(90deg, #2c2c2c 0%, #222 100%);
+    border-left: 4px solid var(--primary-teal);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 10px;
+    cursor: grab;
+    color: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+}
+.draggable-item:hover { transform: translateX(5px); background: #333; }
+
+/* Right Panel: The Time Grid */
+.schedule-grid-container {
+    flex-grow: 1;          /* Takes up all remaining width */
+    background-color: rgba(20, 20, 20, 0.4);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    overflow: auto;        /* Enables scrolling for the big table */
+    position: relative;
+}
+
+.schedule-table {
+    width: 100%;
+    min-width: 900px; /* Ensures grid columns are wide enough */
+    border-collapse: collapse;
+}
+
+.schedule-table th {
+    background-color: rgba(10, 10, 10, 0.95); /* Opaque header */
+    border-bottom: 1px solid var(--glass-border);
+    border-right: 1px solid var(--glass-border);
+    padding: 15px;
+    color: var(--primary-teal);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    position: sticky; /* Keeps header fixed while scrolling */
+    top: 0;
+    z-index: 5;
+}
+
+.schedule-table td {
+    border-right: 1px solid rgba(255,255,255,0.03);
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    height: 100px;
+    vertical-align: top;
+    padding: 5px;
+}
+.schedule-table td.drag-over {
+    background-color: rgba(0, 206, 209, 0.1) !important;
+    border: 2px dashed var(--primary-teal);
+}
+
+.scheduled-event {
+    background: linear-gradient(135deg, #00CED1 0%, #009ea1 100%);
+    color: #050505;
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    border-radius: 8px;
+    margin-bottom: 4px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    display: flex; justify-content: space-between; align-items: center;
+}
+
+/* Mobile Responsive: Stack them on small screens */
+@media (max-width: 992px) {
+    .schedule-workspace {
+        flex-direction: column;
+        height: auto;
+    }
+    .movie-library {
+        width: 100%;
+        height: 250px; /* Shorter fixed height for mobile */
+    }
+}
+
+/* --- 8. UTILITIES & ANIMATIONS --- */
+
+/* AI Feedback Card (Sleek Dark) */
+#aiFeedbackCard {
+    background-color: #080808 !important;
+    border: 1px solid var(--primary-teal) !important;
+    border-left: 5px solid var(--primary-teal) !important;
+    color: #fff !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 40px rgba(0, 206, 209, 0.1);
+}
+#aiFeedbackCard .btn-close { filter: invert(1); }
+
+/* Spacing fix for Manpower Slider */
+.spacing-fix { margin-top: 3rem !important; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); }
+
+/* Animation */
+.animate-slide-in { animation: fadeInUp 0.5s ease-out forwards; }
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Helper Text Colors */
+.text-teal { color: var(--primary-teal) !important; }
+.text-green { color: #4ade80 !important; }
+.text-danger { color: #f87171 !important; }
+.text-success { color: #4ade80 !important; }
+.icon-box {
+    width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%;
+}
+.cursor-pointer { cursor: pointer; }
+
+/* --- FIX KIT (Icons, Alignment, Checkboxes) --- */
+
+/* 1. RESTORE ICON BACKGROUNDS (Fixes invisible icons) */
+.bg-blue-soft { background-color: rgba(59, 130, 246, 0.2); color: #60a5fa !important; }
+.bg-purple-soft { background-color: rgba(147, 51, 234, 0.2); color: #a855f7 !important; }
+.bg-green-soft { background-color: rgba(34, 197, 94, 0.2); color: #4ade80 !important; }
+.bg-gray-soft { background-color: rgba(255, 255, 255, 0.1); color: #9ca3af !important; }
+
+/* 2. INVENTORY ALIGNMENT FIX */
+/* Forces the "Last Count" box to match the "Input" height perfectly */
+.box-last-count {
+    height: 48px; /* Matches form-control standard height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    font-size: 1.1rem;
+    background-color: rgba(0,0,0,0.2) !important;
+}
+
+/* 3. CHECKBOX FIXES (AI Parameters) */
+/* Removes the weird glow/disconnect and aligns them */
+.form-check-input {
+    width: 1.3em;
+    height: 1.3em;
+    margin-top: 0.2em;
+    border: 1px solid rgba(255,255,255,0.3) !important;
+    background-color: rgba(0,0,0,0.5) !important;
+    cursor: pointer;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-teal) !important;
+    border-color: var(--primary-teal) !important;
+    box-shadow: 0 0 10px rgba(0, 206, 209, 0.4) !important;
+}
+
+/* Update the card surrounding the checkbox to blend better */
+#aiStrategyForm .form-check {
+    background-color: rgba(255,255,255,0.03) !important; /* Subtle glass */
+    border: 1px solid rgba(255,255,255,0.05) !important;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
