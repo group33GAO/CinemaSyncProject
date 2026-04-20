@@ -7,6 +7,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddHttpClient();
+builder.Services.AddSingleton<CinemaSyncServer.Services.MapiService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
