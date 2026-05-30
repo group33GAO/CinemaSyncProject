@@ -267,3 +267,18 @@ BEGIN
     SELECT @@ROWCOUNT AS RowsAffected;
 END;
 GO
+
+-- =========================================================
+-- Venues
+-- =========================================================
+
+CREATE OR ALTER PROCEDURE SP_Venues_GetById
+    @VenueId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT VenueId, BranchCode, VenueName, Capacity, VenueType, Has3D, HasAtmos, IsActive
+    FROM Venues
+    WHERE VenueId = @VenueId;
+END;
+GO
