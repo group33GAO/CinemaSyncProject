@@ -1,5 +1,6 @@
 var currentInventory = [];
 var currentBranchCode = null;
+var currentCategory = "all";
 
 $(document).ready(function () {
     if (!requireLogin()) {
@@ -30,38 +31,85 @@ $(document).ready(function () {
     $("#btnSync").on("click", onSyncClick);
     $("#inventorySearch").on("input", onSearchInput);
     $("#btnClearSearch").on("click", onClearSearch);
+    $(".category-pill").on("click", onCategoryClick);
 });
+
+function onCategoryClick() {
+    $(".category-pill").removeClass("active");
+    $(this).addClass("active");
+    currentCategory = $(this).data("category");
+    applyFilters();
+}
+
+function getProductCategory(item) {
+    var name = item.productName || "";
+    var supplier = item.supplier || "";
+
+    // Equipment / operational returns / misc — must run BEFORE other checks
+    // so items like "בלוני גז" and "משטחים להחזרה" don't get caught as drinks/sweets
+    if (name.indexOf("בלוני גז") !== -1 ||
+        name.indexOf("משטחים") !== -1 ||
+        name.indexOf("חומר ניקוי") !== -1) return "other";
+
+    if (supplier.indexOf("נגה") !== -1) return "icecream";
+    if (supplier.indexOf("ביזיטופ") !== -1 || supplier.indexOf("קפיטל מדיה") !== -1) return "merch";
+    if (supplier.indexOf("פריטים נוספים") !== -1) return "other";
+    if (supplier.indexOf("דונה איטליה") !== -1) return "other";
+
+    if (name.indexOf("כוס") !== -1 || name.indexOf("מכסה") !== -1 ||
+        name.indexOf("קש ") !== -1 || name.indexOf("מפיון") !== -1 ||
+        name.indexOf("מפיות") !== -1 || name.indexOf("נייר טרמי") !== -1 ||
+        name.indexOf("דפי A4") !== -1) return "disposables";
+
+    if (supplier.indexOf("נסלי") !== -1) return "drinks";
+    if (name.indexOf("פריגת") !== -1 || name.indexOf("פיוז") !== -1 ||
+        name.indexOf("מים") !== -1 || name.indexOf("נביעות") !== -1 ||
+        name.indexOf("מונסטר") !== -1 || name.indexOf("קינלי") !== -1 ||
+        name.indexOf("קרלסברג") !== -1 || name.indexOf("טובורג") !== -1 ||
+        name.indexOf("קרמול") !== -1 || name.indexOf("תרכיז") !== -1) return "drinks";
+
+    if (supplier.indexOf("פופלי") !== -1 || supplier.indexOf("פאן פוד") !== -1 ||
+        supplier.indexOf("אוסם") !== -1) return "snacks";
+    if (name.indexOf("במבה") !== -1 || name.indexOf("פופקורן") !== -1 ||
+        name.indexOf("נאצ") !== -1 || name.indexOf("סוכר") !== -1 ||
+        name.indexOf("חמאה") !== -1 || name.indexOf("מלח") === 0 ||
+        name === "מלח" || name.indexOf("שמן") === 0) return "snacks";
+
+    return "sweets";
+}
 
 function onSearchInput() {
     var query = $(this).val();
-    filterInventory(query);
     if (query.length > 0) {
         $("#btnClearSearch").css("display", "flex");
     } else {
         $("#btnClearSearch").css("display", "none");
     }
+    applyFilters();
 }
 
 function onClearSearch() {
     $("#inventorySearch").val("").trigger("input").focus();
 }
 
-function filterInventory(query) {
-    var q = (query || "").trim().toLowerCase();
-    if (q === "") {
-        renderInventory(currentInventory);
-        return;
-    }
+function applyFilters() {
+    var q = ($("#inventorySearch").val() || "").trim().toLowerCase();
     var filtered = [];
     var i;
     for (i = 0; i < currentInventory.length; i++) {
         var item = currentInventory[i];
-        var name = (item.productName || "").toLowerCase();
-        var supplier = (item.supplier || "").toLowerCase();
-        var barcode = (item.barcode || "").toLowerCase();
-        if (name.indexOf(q) !== -1 || supplier.indexOf(q) !== -1 || barcode.indexOf(q) !== -1) {
-            filtered.push(item);
+        if (currentCategory !== "all" && getProductCategory(item) !== currentCategory) {
+            continue;
         }
+        if (q !== "") {
+            var name = (item.productName || "").toLowerCase();
+            var supplier = (item.supplier || "").toLowerCase();
+            var barcode = (item.barcode || "").toLowerCase();
+            if (name.indexOf(q) === -1 && supplier.indexOf(q) === -1 && barcode.indexOf(q) === -1) {
+                continue;
+            }
+        }
+        filtered.push(item);
     }
     if (filtered.length === 0) {
         $("#inventoryContainer").html(
@@ -89,7 +137,7 @@ function loadInventory() {
 
 function onInventoryLoaded(items) {
     currentInventory = items || [];
-    renderInventory(currentInventory);
+    applyFilters();
 }
 
 function onInventoryError() {
