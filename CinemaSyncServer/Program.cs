@@ -9,6 +9,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<CinemaSyncServer.Services.MapiService>();
+builder.Services.AddSingleton<CinemaSyncServer.Services.PythonPredictorClient>();
 
 var app = builder.Build();
 
