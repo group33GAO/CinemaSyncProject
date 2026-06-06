@@ -1147,3 +1147,91 @@ body.inventory-page button#btnSync {
     from { opacity: 0; transform: translateY(20px); }
     to   { opacity: 1; transform: translateY(0); }
 }
+
+
+/* =============================================================================
+   SECTION 16: WEEKLY HEATMAP
+   ============================================================================= */
+
+.heatmap-section { margin-top: 16px; }
+.heatmap-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+}
+.heatmap-grid {
+    display: grid;
+    grid-template-columns: 70px repeat(7, 1fr);
+    gap: 4px;
+    margin-top: 8px;
+}
+.heatmap-corner {
+    background: transparent;
+}
+.heatmap-day-header,
+.heatmap-hour-label {
+    padding: 8px 4px;
+    text-align: center;
+    color: var(--primary-teal, #5eead4);
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+.heatmap-hour-label {
+    text-align: right;
+    padding-right: 10px;
+    color: #9ca3af;
+}
+.heatmap-cell {
+    padding: 10px 4px;
+    text-align: center;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    border: 2px solid transparent;
+    font-size: 0.95rem;
+    position: relative;
+}
+.cell-rank {
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    font-size: 0.75rem;
+    line-height: 1;
+    text-shadow: 0 0 3px rgba(0,0,0,0.6);
+}
+.rank-gold   { color: #fde047; }
+.rank-silver { color: #e5e7eb; }
+.rank-bronze { color: #fb923c; }
+.heatmap-cell .cell-sub {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 400;
+    opacity: 0.85;
+    margin-top: 2px;
+}
+.heatmap-cell:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(255,255,255,0.4);
+    z-index: 2;
+}
+.heatmap-cell.active {
+    border-color: #fff;
+    box-shadow: 0 0 12px rgba(255,255,255,0.6);
+}
+.heatmap-legend {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+    font-size: 0.8rem;
+    color: #9ca3af;
+}
+.heatmap-legend-bar {
+    width: 140px;
+    height: 10px;
+    background: linear-gradient(to right, hsl(200,12%,22%), hsl(160,50%,40%), hsl(120,80%,57%));
+    border-radius: 5px;
+}

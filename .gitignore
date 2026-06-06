@@ -14,3 +14,7 @@
 /CinemaSyncServer/obj
 /CinemaSyncServer/.vs
 CinemaSyncServer/obj/Debug/net6.0/CinemaSyncServer.AssemblyInfoInputs.cache
+*.pkl
+/CinemaSyncServer/bin/Debug/net6.0
+/CinemaSyncServer/bin/Debug
+/MLService/__pycache__

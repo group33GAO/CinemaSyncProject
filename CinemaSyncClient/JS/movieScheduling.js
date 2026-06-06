@@ -27,7 +27,7 @@ $(document).ready(function () {
     $("#btnCloseModal").on("click", doCancel);
     $("#btnStartScheduling").on("click", doStartScheduling);
     $("#btnChangeContext").on("click", doChangeContext);
-    $("#btnPredict").on("click", doPredict);
+    $("#btnGenerateHeatmap").on("click", doGenerateHeatmap);
 
     const existingContext = sessionStorage.getItem("scheduleContext");
     if (existingContext) {
@@ -185,80 +185,18 @@ function showMainScreen() {
     $("#ctxVenueDisplay").text(context.venueDisplay);
     $("#schedulingMain").removeClass("d-none");
 
-    initPredictDefaults(context.weekStartDate);
+    resetPredictionUi();
     loadMovieLibrary();
 }
 
-function initPredictDefaults(weekStartDate) {
-    buildDayPicker(weekStartDate);
-    buildTimePresets();
-    $("#predictTime").val("19:00");
+function resetPredictionUi() {
+    $("#heatmapSection").addClass("d-none");
     $("#predictionResult").addClass("d-none");
     hidePredictionError();
 }
 
-function buildTimePresets() {
-    var menu = $(".predict-time-menu");
-    menu.empty();
-
-    var h;
-    var m;
-    for (h = 10; h <= 23; h++) {
-        for (m = 0; m < 60; m += 5) {
-            var value = padTwo(h) + ":" + padTwo(m);
-            menu.append('<li><button class="dropdown-item" type="button" data-time="' + value + '">' + value + '</button></li>');
-        }
-    }
-
-    $(".predict-time-menu").off("click", ".dropdown-item");
-    $(".predict-time-menu").on("click", ".dropdown-item", onTimePresetClick);
-}
-
 function padTwo(num) {
     return num < 10 ? "0" + num : String(num);
-}
-
-function onTimePresetClick() {
-    var selectedTime = $(this).attr("data-time");
-    if (selectedTime) {
-        $("#predictTime").val(selectedTime);
-    }
-}
-
-function buildDayPicker(weekStartDate) {
-    var container = $("#predictDayPicker");
-    container.empty();
-    if (!weekStartDate) return;
-
-    var startDate = new Date(weekStartDate + "T00:00:00");
-    var dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-    var i;
-    for (i = 0; i < 7; i++) {
-        var dt = new Date(startDate);
-        dt.setDate(startDate.getDate() + i);
-
-        var iso = formatDateAsString(dt);
-        var dayLabel = dayNames[dt.getDay()];
-        var monthLabel = monthNames[dt.getMonth()];
-        var dayNum = dt.getDate();
-
-        var cardHtml = '<button type="button" class="predict-day-card" data-date="' + iso + '">' +
-                         '<span class="predict-day-name">' + dayLabel + '</span>' +
-                         '<span class="predict-day-num">' + dayNum + '</span>' +
-                         '<span class="predict-day-month">' + monthLabel + '</span>' +
-                       '</button>';
-        container.append(cardHtml);
-    }
-
-    $(".predict-day-card").first().addClass("selected");
-
-    $("#predictDayPicker").off("click", ".predict-day-card");
-    $("#predictDayPicker").on("click", ".predict-day-card", function () {
-        $(".predict-day-card").removeClass("selected");
-        $(this).addClass("selected");
-    });
 }
 
 function formatDateForDisplay(yyyymmdd) {
@@ -413,25 +351,13 @@ function onMoviesError() {
     $("#movieErrorState").removeClass("d-none").text("Could not load movies. Please refresh the page.");
 }
 
-function doPredict() {
+function doGenerateHeatmap() {
     hidePredictionError();
+    $("#heatmapSection").addClass("d-none");
     $("#predictionResult").addClass("d-none");
 
     if (!selectedMovieEdi) {
         showPredictionError("Please select a movie from the library first.");
-        return;
-    }
-
-    var selectedCard = $(".predict-day-card.selected");
-    if (selectedCard.length === 0) {
-        showPredictionError("Please choose a day.");
-        return;
-    }
-    var dateValue = selectedCard.attr("data-date");
-    var timeValue = $("#predictTime").val();
-
-    if (!timeValue) {
-        showPredictionError("Please choose a time.");
         return;
     }
 
@@ -442,21 +368,157 @@ function doPredict() {
     }
     var context = JSON.parse(rawContext);
 
-    var slotIso = dateValue + "T" + timeValue + ":00";
+    var requestBody = {
+        movieEdi: String(selectedMovieEdi),
+        venueId: context.venueId,
+        weekStartDate: context.weekStartDate + "T00:00:00"
+    };
 
+    $("#btnGenerateHeatmap").prop("disabled", true).html('<i class="fa-solid fa-spinner fa-spin me-2"></i>Generating heatmap...');
+
+    ajaxCall("POST", "/Prediction/predict-week", requestBody, onHeatmapSuccess, onHeatmapError);
+}
+
+function onHeatmapSuccess(result) {
+    resetHeatmapButton();
+
+    if (!result || !result.cells || result.cells.length === 0) {
+        showPredictionError("Heatmap returned no data.");
+        return;
+    }
+
+    $("#heatmapMovieName").text(result.movieTitle || "(unknown)");
+    $("#heatmapCapacity").text(result.capacity);
+    $("#heatmapRange").text(result.minTickets + " – " + result.maxTickets + " tickets");
+
+    renderHeatmapGrid(result);
+    $("#heatmapSection").removeClass("d-none");
+}
+
+function onHeatmapError(xhr) {
+    resetHeatmapButton();
+    showPredictionError(extractErrorMessage(xhr, "Heatmap generation failed"));
+}
+
+function resetHeatmapButton() {
+    $("#btnGenerateHeatmap").prop("disabled", false).html('<i class="fa-solid fa-table-cells me-2"></i>Generate Weekly Heatmap');
+}
+
+function renderHeatmapGrid(result) {
+    var dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    var hours = [10, 12, 14, 16, 18, 20, 22];
+
+    var grid = $("#heatmapGrid");
+    grid.empty();
+
+    grid.append('<div class="heatmap-corner"></div>');
+    for (var d = 0; d < 7; d++) {
+        grid.append('<div class="heatmap-day-header">' + dayNames[d] + '</div>');
+    }
+
+    var cellsByKey = {};
+    for (var i = 0; i < result.cells.length; i++) {
+        var c = result.cells[i];
+        cellsByKey[c.dayIndex + "_" + c.hour] = c;
+    }
+
+    var sortedByTickets = result.cells.slice().sort(function (a, b) {
+        return b.tickets - a.tickets;
+    });
+    var rankByKey = {};
+    for (var r = 0; r < Math.min(3, sortedByTickets.length); r++) {
+        var topCell = sortedByTickets[r];
+        rankByKey[topCell.dayIndex + "_" + topCell.hour] = r + 1;
+    }
+
+    var minT = result.minTickets;
+    var maxT = result.maxTickets;
+
+    for (var h = 0; h < hours.length; h++) {
+        var hr = hours[h];
+        var hrLabel = padTwo(hr) + ":00";
+        grid.append('<div class="heatmap-hour-label">' + hrLabel + '</div>');
+
+        for (var dd = 0; dd < 7; dd++) {
+            var key = dd + "_" + hr;
+            var cell = cellsByKey[key];
+            if (!cell) {
+                grid.append('<div class="heatmap-cell" style="background:#374151;">-</div>');
+                continue;
+            }
+            var bg = colorForValue(cell.tickets, minT, maxT);
+            var occPct = Math.round(cell.occupancy * 100);
+            var rank = rankByKey[key];
+            var rankBadge = "";
+            if (rank === 1) rankBadge = '<span class="cell-rank rank-gold">★</span>';
+            else if (rank === 2) rankBadge = '<span class="cell-rank rank-silver">★</span>';
+            else if (rank === 3) rankBadge = '<span class="cell-rank rank-bronze">★</span>';
+            var cellHtml = '<div class="heatmap-cell" ' +
+                              'data-date="' + cell.dateIso + '" ' +
+                              'data-hour="' + cell.hour + '" ' +
+                              'style="background:' + bg + ';">' +
+                              rankBadge +
+                              cell.tickets +
+                              '<span class="cell-sub">' + occPct + '%</span>' +
+                          '</div>';
+            grid.append(cellHtml);
+        }
+    }
+
+    $(".heatmap-cell[data-date]").off("click").on("click", onHeatmapCellClick);
+}
+
+function colorForValue(tickets, minT, maxT) {
+    if (maxT === minT) return "hsl(150, 55%, 42%)";
+    var t = (tickets - minT) / (maxT - minT);
+    if (t < 0) t = 0;
+    if (t > 1) t = 1;
+    var hue = 200 - t * 80;
+    var sat = 12 + t * 68;
+    var light = 22 + t * 35;
+    return "hsl(" + hue + ", " + sat + "%, " + light + "%)";
+}
+
+function onHeatmapCellClick() {
+    var $this = $(this);
+    $(".heatmap-cell").removeClass("active");
+    $this.addClass("active");
+
+    var dateValue = $this.attr("data-date");
+    var hourValue = parseInt($this.attr("data-hour"), 10);
+    var rawContext = sessionStorage.getItem("scheduleContext");
+    if (!rawContext) return;
+    var context = JSON.parse(rawContext);
+
+    var slotIso = dateValue + "T" + padTwo(hourValue) + ":00:00";
     var requestBody = {
         movieEdi: String(selectedMovieEdi),
         venueId: context.venueId,
         slotDateTime: slotIso
     };
 
-    $("#btnPredict").prop("disabled", true).html('<i class="fa-solid fa-spinner fa-spin me-2"></i>Predicting...');
-
+    $("#predictionResult").addClass("d-none");
+    hidePredictionError();
     ajaxCall("POST", "/Prediction/predict-slot", requestBody, onPredictionSuccess, onPredictionError);
 }
 
+function extractErrorMessage(xhr, fallback) {
+    var status = xhr ? xhr.status : 0;
+    var detail = "";
+    if (xhr && xhr.responseText) {
+        try {
+            var parsed = JSON.parse(xhr.responseText);
+            if (parsed && (parsed.title || parsed.detail || parsed.message)) {
+                detail = parsed.title || parsed.detail || parsed.message;
+            }
+        } catch (e) {
+            detail = xhr.responseText.substring(0, 200);
+        }
+    }
+    return fallback + " (HTTP " + status + ")" + (detail ? ": " + detail : "");
+}
+
 function onPredictionSuccess(result) {
-    resetPredictButton();
 
     if (!result || typeof result.occupancy !== "number") {
         showPredictionError("Unexpected response from the server.");
@@ -474,117 +536,42 @@ function onPredictionSuccess(result) {
     $("#predictMovieName").text(movieName);
 
     renderPredictionFactors(result);
-    renderPredictionSuggestions(result);
 
     $("#predictionResult").removeClass("d-none");
 }
 
-function renderPredictionSuggestions(result) {
-    var list = $("#predictSuggestions");
-    var wrap = $("#predictSuggestionsWrap");
-    list.empty();
-
-    var suggestions = result.suggestions || [];
-    if (suggestions.length === 0) {
-        wrap.addClass("d-none");
-        return;
-    }
-
-    for (var i = 0; i < suggestions.length; i++) {
-        var s = suggestions[i];
-        var iconClass = iconForSuggestionType(s.type);
-        var deltaPct = (s.delta * 100).toFixed(1);
-        var newPct = Math.round(s.newOccupancy * 100);
-        var row = '<li class="suggestion-row">' +
-                    '<span class="suggestion-icon"><i class="' + iconClass + '"></i></span>' +
-                    '<span class="suggestion-text">' + escapeHtml(s.description) + '</span>' +
-                    '<span class="suggestion-delta">+' + deltaPct + ' pts <span class="suggestion-target">→ ' + newPct + '%</span></span>' +
-                  '</li>';
-        list.append(row);
-    }
-    wrap.removeClass("d-none");
-}
-
-function iconForSuggestionType(type) {
-    if (type === "venue") return "fa-solid fa-couch";
-    if (type === "time") return "fa-regular fa-clock";
-    if (type === "day") return "fa-regular fa-calendar";
-    return "fa-solid fa-lightbulb";
-}
-
 function renderPredictionFactors(result) {
-    var baseRate = typeof result.baseRate === "number" ? result.baseRate : 0;
-    $("#predictBaseRate").text(Math.round(baseRate * 100) + "%");
+    var baseTickets = typeof result.baseTickets === "number" ? result.baseTickets : 0;
+    $("#predictBaseTickets").text(baseTickets.toFixed(1));
 
     var list = $("#predictFactors");
     list.empty();
 
     var contributions = result.topContributions || [];
     if (contributions.length === 0) {
-        list.append('<li class="factor-empty text-muted small">No individual feature stood out for this prediction.</li>');
+        list.append('<li class="factor-empty text-muted small">No factors returned.</li>');
         return;
     }
 
     for (var i = 0; i < contributions.length; i++) {
         var item = contributions[i];
-        var label = item.label || item.featureName;
-        var pct = item.contribution * 100;
-        var signClass = pct >= 0 ? "factor-positive" : "factor-negative";
-        var signSymbol = pct >= 0 ? "+" : "−";
-        var pctText = signSymbol + Math.abs(pct).toFixed(1) + " pts";
+        var label = item.label || item.feature;
+        var shap = item.shapValue;
+        var signClass = shap >= 0 ? "factor-positive" : "factor-negative";
+        var signSymbol = shap >= 0 ? "+" : "−";
+        var valText = signSymbol + Math.abs(shap).toFixed(2) + " tickets";
 
         var row = '<li class="factor-row">' +
                     '<span class="factor-label">' + escapeHtml(label) + '</span>' +
-                    '<span class="factor-value ' + signClass + '">' + pctText + '</span>' +
+                    '<span class="factor-value ' + signClass + '">' + valText + '</span>' +
                   '</li>';
         list.append(row);
     }
 }
 
 function onPredictionError(xhr) {
-    resetPredictButton();
     console.error("Prediction request failed", xhr);
-
-    var status = xhr ? xhr.status : 0;
-    var statusText = xhr ? xhr.statusText : "";
-    var body = xhr ? xhr.responseText : "";
-
-    var detail = "";
-    if (body) {
-        try {
-            var parsed = JSON.parse(body);
-            if (parsed) {
-                var pieces = [];
-                if (parsed.title) pieces.push(parsed.title);
-                if (parsed.message) pieces.push(parsed.message);
-                if (parsed.detail) pieces.push(parsed.detail);
-                if (parsed.errors) {
-                    for (var key in parsed.errors) {
-                        if (parsed.errors.hasOwnProperty(key)) {
-                            var errVal = parsed.errors[key];
-                            var errText = Array.isArray(errVal) ? errVal.join(", ") : String(errVal);
-                            pieces.push(key + ": " + errText);
-                        }
-                    }
-                }
-                detail = pieces.length > 0 ? pieces.join(" | ") : JSON.stringify(parsed).substring(0, 300);
-            }
-        } catch (e) {
-            var stripped = body.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
-            detail = stripped.substring(0, 300);
-        }
-    }
-
-    var fullMessage = "Prediction failed (HTTP " + status;
-    if (statusText) fullMessage += " " + statusText;
-    fullMessage += ")";
-    if (detail) fullMessage += ": " + detail;
-
-    showPredictionError(fullMessage);
-}
-
-function resetPredictButton() {
-    $("#btnPredict").prop("disabled", false).html('<i class="fa-solid fa-chart-line me-2"></i>Predict Occupancy');
+    showPredictionError(extractErrorMessage(xhr, "Prediction failed"));
 }
 
 function findMovieByEdi(edi) {
