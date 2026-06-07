@@ -1,22 +1,33 @@
+# ===== Visual Studio =====
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
 *.vsidx
-*.cs
-*.cs
+
+# ===== .NET Build outputs =====
+bin/
+obj/
+*.dll
+*.pdb
+*.exe
 *.cache
-*.sqlite
-*.cache
-*.editorconfig
-*.vsidx
-*.json
-*.cs
-*.cache
-*.cs
-/CinemaSyncServer/obj
-/CinemaSyncServer/obj
-/CinemaSyncServer/.vs
-CinemaSyncServer/obj/Debug/net6.0/CinemaSyncServer.AssemblyInfoInputs.cache
+*.sourcelink.json
+
+# ===== Python =====
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# ===== ML model (too large for git) =====
 *.pkl
-/CinemaSyncServer/bin/Debug/net6.0
-/CinemaSyncServer/bin/Debug
-/MLService/__pycache__
-/CinemaSyncServer/bin
-/CinemaSyncServer/obj/Debug
+
+# ===== OS files =====
+.DS_Store
+Thumbs.db
+
+# ===== Database / SQLite =====
+*.sqlite
