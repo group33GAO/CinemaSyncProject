@@ -49,46 +49,220 @@ VALID_COUNTRIES = [
 VALID_SEASONS = ["Spring", "Summer", "Autumn", "Winter"]
 VALID_TIMESLOTS = ["Morning", "Noon", "Evening", "Night"]
 
-MONTH_NAMES = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December",
+MONTH_NAMES_HE = [
+    "ינואר", "פברואר", "מרץ", "אפריל", "מאי", "יוני",
+    "יולי", "אוגוסט", "ספטמבר", "אוקטובר", "נובמבר", "דצמבר",
 ]
 
-NUMERIC_LABELS = {
-    "Weekday_int": "Day of week",
-    "Is_Weekend_binary": "Weekend",
-    "MovieWeek_int": "Week since release",
-    "SubtitledLanguageId_int": "Subtitle language",
-    "LengthInMinutes_int": "Movie length",
-    "IsDubbed_binary": "Dubbed",
-    "IsSubtitled_binary": "Subtitled",
-    "OMDbMetascore_float": "Metascore",
-    "OMDbImdbRating_float": "IMDb rating",
-    "OMDbImdbVotes_float": "IMDb votes",
-    "OMDbBoxOffice_float": "Box office",
-    "Num_Wins_int": "Award wins",
-    "Num_Nominations_int": "Award nominations",
-    "Hour_int": "Hour of day",
-    "Is_Hebrew_Local_binary": "Hebrew local production",
-    "Has_Imdb_Data_binary": "Has IMDb data",
+NUMERIC_LABELS_HE = {
+    "Weekday_int": "יום בשבוע",
+    "Is_Weekend_binary": "סוף שבוע",
+    "MovieWeek_int": "שבוע מתחילת ההקרנה",
+    "SubtitledLanguageId_int": "שפת תרגום",
+    "LengthInMinutes_int": "אורך הסרט",
+    "IsDubbed_binary": "מדובב",
+    "IsSubtitled_binary": "מתורגם",
+    "OMDbMetascore_float": "ציון Metascore",
+    "OMDbImdbRating_float": "דירוג IMDb",
+    "OMDbImdbVotes_float": "מספר הצבעות IMDb",
+    "OMDbBoxOffice_float": "הכנסות קופה",
+    "Num_Wins_int": "פרסים שזכה",
+    "Num_Nominations_int": "מועמדויות לפרסים",
+    "Hour_int": "שעה ביום",
+    "Is_Hebrew_Local_binary": "הפקה ישראלית",
+    "Has_Imdb_Data_binary": "קיימים נתוני IMDb",
 }
+
+GENRES_HE = {
+    "Action": "אקשן", "Adventure": "הרפתקאות", "Animation": "אנימציה",
+    "Biography": "ביוגרפיה", "Comedy": "קומדיה", "Crime": "פשע",
+    "Documentary": "דוקומנטרי", "Drama": "דרמה", "Family": "משפחתי",
+    "Fantasy": "פנטזיה", "History": "היסטוריה", "Horror": "אימה",
+    "Kids": "ילדים", "Live_Shows": "הופעות חיות", "Music": "מוזיקה",
+    "Musical": "מחזמר", "Mystery": "מסתורין", "Romance": "רומנטי",
+    "Sci_Fi": "מדע בדיוני", "Short": "סרט קצר", "Sport": "ספורט",
+    "Thriller": "מתח", "War": "מלחמה", "Western": "מערבון",
+}
+
+CINEMAS_HE = {
+    "Ashdod": "אשדוד", "Ashkelon": "אשקלון", "Carmiel": "כרמיאל",
+    "Haifa": "חיפה", "KfarSaba": "כפר סבא", "Kiryon": "קריון",
+    "Modiin": "מודיעין", "Nahariya": "נהריה", "PetahTikva": "פתח תקווה",
+    "Rehovot": "רחובות",
+}
+
+SEASONS_HE = {"Spring": "אביב", "Summer": "קיץ", "Autumn": "סתיו", "Winter": "חורף"}
+TIMESLOTS_HE = {"Morning": "בוקר", "Noon": "צהריים", "Evening": "ערב", "Night": "לילה"}
+
+COUNTRIES_HE = {
+    "USA": "ארה\"ב", "Israel": "ישראל", "France": "צרפת",
+    "England": "אנגליה", "UK": "בריטניה", "Russia": "רוסיה",
+    "Germany": "גרמניה", "Australia": "אוסטרליה", "Spain": "ספרד",
+    "Japan": "יפן", "Other": "אחר",
+}
+
+
+HEBREW_DAYS = ["", "ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"]
+
+
+def factor_explanation(feature_name: str, input_value: float, shap_value: float) -> str:
+    is_positive = shap_value >= 0
+    val = float(input_value)
+
+    if feature_name.startswith("Genre_"):
+        key = feature_name.replace("Genre_", "")
+        g = GENRES_HE.get(key, key)
+        if val == 1:
+            return f"ז'אנר {g} בדרך כלל מושך הרבה צופים" if is_positive else f"ז'אנר {g} פחות פופולרי מהממוצע"
+        return f"אילו הסרט היה בז'אנר {g}, התחזית הייתה גבוהה יותר" if not is_positive else f"בחירה ב{g} לא הייתה משפרת את התחזית"
+
+    if feature_name.startswith("Cinema_"):
+        key = feature_name.replace("Cinema_", "")
+        c = CINEMAS_HE.get(key, key)
+        if val == 1:
+            return f"קולנוע {c} פופולרי בקהל המקומי" if is_positive else f"קולנוע {c} מוכר פחות כרטיסים בממוצע"
+        return f"אילו השיבוץ היה בקולנוע {c}, התחזית הייתה גבוהה יותר" if not is_positive else f"טוב שזה לא {c} — קולנוע פחות מוצלח"
+
+    if feature_name.startswith("Season_"):
+        key = feature_name.replace("Season_", "")
+        s = SEASONS_HE.get(key, key)
+        if val == 1:
+            return f"עונת ה{s} תקופה חזקה לבית הקולנוע" if is_positive else f"עונת ה{s} תקופה חלשה יותר"
+        return f"אילו זה היה ב{s}, התחזית הייתה גבוהה יותר" if not is_positive else f"טוב שזה לא ב{s} — עונה חלשה"
+
+    if feature_name.startswith("TimeSlot_"):
+        key = feature_name.replace("TimeSlot_", "")
+        t = TIMESLOTS_HE.get(key, key)
+        if val == 1:
+            return f"הקרנת {t} פופולרית בקהל" if is_positive else f"הקרנת {t} פחות פופולרית"
+        return f"אילו זה היה ב{t}, התחזית הייתה גבוהה יותר" if not is_positive else f"טוב שזה לא ב{t}"
+
+    if feature_name.startswith("Country_"):
+        key = feature_name.replace("Country_", "")
+        c = COUNTRIES_HE.get(key, key)
+        if val == 1:
+            return f"סרטים מ{c} מצליחים בקהל הישראלי" if is_positive else f"סרטים מ{c} מוכרים פחות כרטיסים"
+        return f"אילו הסרט היה מ{c}, התחזית הייתה גבוהה יותר" if not is_positive else f"טוב שזה לא מ{c}"
+
+    if feature_name.startswith("Month_"):
+        idx = int(feature_name.replace("Month_", "")) - 1
+        m = MONTH_NAMES_HE[idx]
+        if val == 1:
+            return f"חודש {m} תקופה חזקה (חגים/חופש)" if is_positive else f"חודש {m} בדרך כלל חלש יותר"
+        return f"אילו זה היה ב{m}, התחזית הייתה גבוהה יותר" if not is_positive else f"טוב שזה לא ב{m}"
+
+    if feature_name == "Hour_int":
+        h = int(val)
+        return f"שעת ההקרנה ({h:02d}:00) פופולרית בקהל" if is_positive else f"שעת ההקרנה ({h:02d}:00) פחות אטרקטיבית"
+
+    if feature_name == "Weekday_int":
+        d = HEBREW_DAYS[int(val)] if 1 <= int(val) <= 7 else ""
+        return f"יום {d} הוא יום חזק בקולנוע" if is_positive else f"יום {d} יום שקט יחסית"
+
+    if feature_name == "Is_Weekend_binary":
+        if val == 1:
+            return "סוף שבוע - אנשים פנויים יותר לבילוי" if is_positive else "סוף שבוע אבל לא משפר כצפוי"
+        return "יום חול - פחות פנאי לקולנוע" if not is_positive else "יום חול ועדיין מצליח"
+
+    if feature_name == "MovieWeek_int":
+        w = int(val)
+        if w == 1:
+            return "שבוע פתיחה - שיא הציפייה והבאז השיווקי" if is_positive else "שבוע פתיחה אבל החיזוי נמוך"
+        if w <= 3:
+            return f"שבוע {w} - עדיין רלוונטי בתודעת הקהל" if is_positive else f"שבוע {w} - העניין כבר דועך"
+        return f"שבוע {w} להקרנה - הקהל פונה לסרטים חדשים" if not is_positive else f"שבוע {w} ועדיין מושך"
+
+    if feature_name == "LengthInMinutes_int":
+        m = int(val)
+        if is_positive:
+            return f"אורך הסרט ({m} דק') בטווח האהוב על הקהל"
+        if m < 90:
+            return f"הסרט קצר יחסית ({m} דק') - תחושה של 'לא שווה הנסיעה'"
+        if m > 130:
+            return f"הסרט ארוך ({m} דק') - מרתיע חלק מהקהל"
+        return f"אורך {m} דק' - ניטרלי"
+
+    if feature_name == "IsDubbed_binary":
+        if val == 1:
+            return "סרט מדובב - פונה לילדים ולמשפחות" if is_positive else "סרט מדובב - מצמצם קהל בוגר"
+        return "סרט לא מדובב - מוגבל לקהל קורא כתוביות" if not is_positive else "סרט לא מדובב - מוסיף יוקרה"
+
+    if feature_name == "IsSubtitled_binary":
+        if val == 1:
+            return "סרט עם כתוביות - נגיש לכלל הקהל" if is_positive else "סרט עם כתוביות"
+        return "ללא כתוביות - מוגבל לדוברי השפה" if not is_positive else "ללא כתוביות"
+
+    if feature_name == "OMDbMetascore_float":
+        s = float(val)
+        if s == 0:
+            return "אין נתוני Metascore - חוסר מידע פוגע בחיזוי"
+        return f"Metascore {s:.0f} - ביקורות חיוביות מעודדות מכירות" if is_positive else f"Metascore {s:.0f} - ביקורות חלשות יחסית"
+
+    if feature_name == "OMDbImdbRating_float":
+        r = float(val)
+        if r == 0:
+            return "אין דירוג IMDb - חסרים אינדיקטורים"
+        return f"דירוג IMDb {r:.1f} - הקהל אוהב את הסרט" if is_positive else f"דירוג IMDb {r:.1f} - הקהל פחות מתחבר"
+
+    if feature_name == "OMDbImdbVotes_float":
+        v = int(val)
+        if v == 0:
+            return "אין הצבעות IMDb - הסרט לא מוכר"
+        return f"{v:,} הצבעות IMDb - סרט מוכר ופופולרי" if is_positive else f"רק {v:,} הצבעות - חשיפה מוגבלת"
+
+    if feature_name == "OMDbBoxOffice_float":
+        b = int(val)
+        if b == 0:
+            return "אין נתוני קופה - אין הוכחה להצלחה מסחרית"
+        if is_positive:
+            return f"הכנסות גבוהות (${b:,}) - סרט שמושך בעולם"
+        return f"הכנסות נמוכות (${b:,}) - סרט שלא הצליח מסחרית"
+
+    if feature_name == "Num_Wins_int":
+        n = int(val)
+        if n == 0:
+            return "ללא פרסים - אין באז של זכיות"
+        return f"זכה ב-{n} פרסים - באז של איכות" if is_positive else f"{n} פרסים אבל לא תורם"
+
+    if feature_name == "Num_Nominations_int":
+        n = int(val)
+        if n == 0:
+            return "ללא מועמדויות לפרסים"
+        return f"{n} מועמדויות לפרסים - הקהל מסקרן" if is_positive else f"{n} מועמדויות אבל לא משפיע"
+
+    if feature_name == "Is_Hebrew_Local_binary":
+        if val == 1:
+            return "הפקה ישראלית - קהל מקומי נאמן" if is_positive else "הפקה ישראלית - אך לא מצליחה"
+        return "סרט זר - דורש שיווק חזק" if not is_positive else "סרט זר ומצליח"
+
+    if feature_name == "Has_Imdb_Data_binary":
+        if val == 1:
+            return "קיימים נתוני IMDb - אינדיקטור לחשיפה" if is_positive else "קיימים נתוני IMDb"
+        return "אין נתוני IMDb - הסרט לא מוכר באינטרנט" if not is_positive else "אין נתוני IMDb"
+
+    return ""
 
 
 def feature_label(feature_name: str, input_value: float) -> str:
     if feature_name.startswith("Genre_"):
-        return feature_name.replace("Genre_", "").replace("_", " ") + " genre"
+        key = feature_name.replace("Genre_", "")
+        return "ז'אנר: " + GENRES_HE.get(key, key)
     if feature_name.startswith("Cinema_"):
-        return feature_name.replace("Cinema_", "") + " cinema"
+        key = feature_name.replace("Cinema_", "")
+        return "קולנוע " + CINEMAS_HE.get(key, key)
     if feature_name.startswith("Season_"):
-        return feature_name.replace("Season_", "") + " season"
+        key = feature_name.replace("Season_", "")
+        return "עונת " + SEASONS_HE.get(key, key)
     if feature_name.startswith("TimeSlot_"):
-        return feature_name.replace("TimeSlot_", "") + " time slot"
+        key = feature_name.replace("TimeSlot_", "")
+        return "חלון זמן: " + TIMESLOTS_HE.get(key, key)
     if feature_name.startswith("Country_"):
-        return feature_name.replace("Country_", "") + " country"
+        key = feature_name.replace("Country_", "")
+        return "מדינת הפקה: " + COUNTRIES_HE.get(key, key)
     if feature_name.startswith("Month_"):
         idx = int(feature_name.replace("Month_", "")) - 1
-        return MONTH_NAMES[idx]
-    return NUMERIC_LABELS.get(feature_name, feature_name)
+        return "חודש " + MONTH_NAMES_HE[idx]
+    return NUMERIC_LABELS_HE.get(feature_name, feature_name)
 
 
 class PredictionRequest(BaseModel):
@@ -119,6 +293,7 @@ class FactorContribution(BaseModel):
     label: str
     input_value: float
     shap_value: float
+    explanation: str = ""
 
 
 class PredictionResponse(BaseModel):
@@ -214,6 +389,7 @@ def compute_top_factors(features_df: pd.DataFrame, top_n: int = 8) -> List[Facto
             label=feature_label(name, iv),
             input_value=iv,
             shap_value=round(sv, 3),
+            explanation=factor_explanation(name, iv, sv),
         )
         for name, iv, sv in top
     ]
