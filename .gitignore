@@ -18,3 +18,5 @@ CinemaSyncServer/obj/Debug/net6.0/CinemaSyncServer.AssemblyInfoInputs.cache
 /CinemaSyncServer/bin/Debug/net6.0
 /CinemaSyncServer/bin/Debug
 /MLService/__pycache__
+/CinemaSyncServer/bin
+/CinemaSyncServer/obj/Debug
