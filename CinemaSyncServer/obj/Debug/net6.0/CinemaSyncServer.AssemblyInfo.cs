@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CinemaSyncServer")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+9d145950a36acb60577a407cd1fd04df0c440113")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e9ed5d791332951d662a1eacf0c060ffc46d36b5")]
 [assembly: System.Reflection.AssemblyProductAttribute("CinemaSyncServer")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CinemaSyncServer")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

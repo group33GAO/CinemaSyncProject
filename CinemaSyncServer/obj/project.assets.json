@@ -598,19 +598,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\oralp\\.nuget\\packages\\": {}
+    "C:\\Users\\Lenovo\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\oralp\\OneDrive\\Desktop\\לימודים\\שנה ד\\CinemaSyncGIT\\CinemaSyncProject\\CinemaSyncServer\\CinemaSyncServer.csproj",
+      "projectUniqueName": "C:\\Users\\Lenovo\\Desktop\\CinemaSyncProject\\CinemaSyncServer\\CinemaSyncServer.csproj",
       "projectName": "CinemaSyncServer",
-      "projectPath": "C:\\Users\\oralp\\OneDrive\\Desktop\\לימודים\\שנה ד\\CinemaSyncGIT\\CinemaSyncProject\\CinemaSyncServer\\CinemaSyncServer.csproj",
-      "packagesPath": "C:\\Users\\oralp\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\oralp\\OneDrive\\Desktop\\לימודים\\שנה ד\\CinemaSyncGIT\\CinemaSyncProject\\CinemaSyncServer\\obj\\",
+      "projectPath": "C:\\Users\\Lenovo\\Desktop\\CinemaSyncProject\\CinemaSyncServer\\CinemaSyncServer.csproj",
+      "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Lenovo\\Desktop\\CinemaSyncProject\\CinemaSyncServer\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\oralp\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -635,7 +640,8 @@
         "enableAudit": "true",
         "auditLevel": "low",
         "auditMode": "direct"
-      }
+      },
+      "SdkAnalysisLevel": "9.0.300"
     },
     "frameworks": {
       "net6.0": {
@@ -661,24 +667,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[6.0.30, 6.0.30]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.win-x64",
-            "version": "[6.0.30, 6.0.30]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[6.0.30, 6.0.30]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[6.0.30, 6.0.30]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -687,7 +675,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.306\\RuntimeIdentifierGraph.json"
       }
     }
   }

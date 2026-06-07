@@ -1284,3 +1284,228 @@ body.inventory-page button#btnSync {
     font-size: 0.85rem;
     line-height: 1.6;
 }
+
+/* =============================================================================
+   SECTION 17: LIGHT MODE
+   ============================================================================= */
+
+body.light-mode {
+    --bg-dark: #f0f4f8;
+    --bg-surface: #ffffff;
+    --glass-bg: rgba(255, 255, 255, 0.92);
+    --glass-border: rgba(0, 0, 0, 0.1);
+    background-color: #f0f4f8 !important;
+    background-image: radial-gradient(circle at 15% 50%, rgba(0, 206, 209, 0.06) 0%, transparent 25%),
+                      radial-gradient(circle at 85% 30%, rgba(147, 51, 234, 0.04) 0%, transparent 25%);
+    color: #1a1a1a !important;
+}
+
+body.light-mode h1,
+body.light-mode h2,
+body.light-mode h3,
+body.light-mode h4,
+body.light-mode h5,
+body.light-mode h6,
+body.light-mode .fw-bold {
+    color: #1a1a1a !important;
+}
+
+body.light-mode .text-muted,
+body.light-mode .small {
+    color: #6b7280 !important;
+}
+
+body.light-mode .text-white {
+    color: #1a1a1a !important;
+}
+
+/* ── Navbar ────────────────────────────────────────────────── */
+body.light-mode .navbar,
+body.light-mode .bg-dark-surface {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light-mode .navbar .btn-link.text-light,
+body.light-mode .navbar a.text-light {
+    color: #374151 !important;
+}
+
+body.light-mode #btnThemeToggle {
+    color: #374151 !important;
+}
+
+/* ── Cards and surfaces ────────────────────────────────────── */
+body.light-mode .card,
+body.light-mode .bg-surface,
+body.light-mode .modal-content,
+body.light-mode .role-card,
+body.light-mode .picker-container {
+    background-color: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* ── Inputs ────────────────────────────────────────────────── */
+body.light-mode .form-control,
+body.light-mode .form-select,
+body.light-mode input:not([type="checkbox"]):not([type="radio"]) {
+    background-color: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.15) !important;
+    color: #1a1a1a !important;
+}
+
+body.light-mode .form-control::placeholder,
+body.light-mode input::placeholder {
+    color: #9ca3af !important;
+}
+
+body.light-mode .input-group-text {
+    background-color: #f3f4f6 !important;
+    border-color: rgba(0, 0, 0, 0.15) !important;
+    color: #6b7280 !important;
+}
+
+body.light-mode .btn-surface {
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-color: rgba(0, 0, 0, 0.15) !important;
+    color: #1a1a1a !important;
+}
+
+/* ── Inventory ─────────────────────────────────────────────── */
+body.light-mode .inventory-page .search-input {
+    background-color: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.15) !important;
+    color: #1a1a1a !important;
+}
+
+body.light-mode .inventory-page .search-input::placeholder {
+    color: #9ca3af !important;
+}
+
+body.light-mode .inventory-page .category-pill {
+    background-color: #f3f4f6 !important;
+    border-color: rgba(0, 0, 0, 0.12) !important;
+    color: #374151 !important;
+}
+
+body.light-mode .supplier-badge {
+    background-color: rgba(0, 0, 0, 0.06) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    color: #374151 !important;
+}
+
+body.light-mode .barcode-display {
+    background-color: rgba(0, 0, 0, 0.03) !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+body.light-mode .barcode-label { color: #6b7280 !important; }
+body.light-mode .barcode-value { color: #1a1a1a !important; }
+
+body.light-mode .box-last-count {
+    background-color: #f3f4f6 !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    color: #6b7280 !important;
+}
+
+body.light-mode .product-note {
+    background-color: rgba(45, 212, 191, 0.06) !important;
+    color: #374151 !important;
+}
+
+/* ── Scheduling (drag & drop studio) ──────────────────────── */
+body.light-mode .movie-library,
+body.light-mode .scheduling-area {
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light-mode .movie-card        { background: #f3f4f6 !important; }
+body.light-mode .movie-card:hover  { background: #e9ecef !important; }
+body.light-mode .movie-card-title  { color: #1a1a1a !important; }
+body.light-mode .movie-card-meta   { color: rgba(0, 0, 0, 0.5) !important; }
+body.light-mode .movie-count,
+body.light-mode .movie-loading     { color: rgba(0, 0, 0, 0.5) !important; }
+
+body.light-mode .context-bar {
+    color: #1a1a1a !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+body.light-mode .context-bar .separator { color: rgba(0, 0, 0, 0.3) !important; }
+body.light-mode .scheduling-placeholder { color: rgba(0, 0, 0, 0.35) !important; }
+
+body.light-mode .schedule-grid-container {
+    background-color: #f0f4f8 !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light-mode .schedule-table th {
+    background-color: #e9ecef !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+body.light-mode .schedule-table td {
+    border-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light-mode .draggable-item {
+    background: linear-gradient(90deg, #f3f4f6 0%, #e9ecef 100%) !important;
+    color: #1a1a1a !important;
+}
+body.light-mode .draggable-item:hover { background: #e2e8f0 !important; }
+
+/* ── Prediction panel ──────────────────────────────────────── */
+body.light-mode .predict-day-card {
+    background: #f3f4f6 !important;
+    border-color: rgba(0, 0, 0, 0.12) !important;
+    color: #1a1a1a !important;
+}
+body.light-mode .predict-day-card:hover { background: #e9ecef !important; }
+
+body.light-mode .prediction-panel .bg-surface { background: #ffffff !important; }
+
+body.light-mode .factor-label       { color: rgba(0, 0, 0, 0.85) !important; }
+body.light-mode .factor-explanation { color: #6b7280 !important; }
+body.light-mode .factor-row         { border-color: rgba(0, 0, 0, 0.08) !important; }
+body.light-mode .suggestion-text    { color: rgba(0, 0, 0, 0.9) !important; }
+body.light-mode .prediction-howto .howto-body { color: rgba(0, 0, 0, 0.85) !important; }
+
+/* ── AI feedback / checkboxes ──────────────────────────────── */
+body.light-mode #aiFeedbackCard {
+    background-color: #f8f9fa !important;
+    color: #1a1a1a !important;
+}
+body.light-mode #aiFeedbackCard .btn-close,
+body.light-mode #scheduleSetupModal .btn-close { filter: none !important; }
+
+body.light-mode .form-check-input {
+    background-color: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.25) !important;
+}
+body.light-mode #aiStrategyForm .form-check {
+    background-color: rgba(0, 0, 0, 0.02) !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+}
+body.light-mode .form-check-label { color: #1a1a1a !important; }
+
+/* ── Manpower ──────────────────────────────────────────────── */
+body.light-mode .role-title     { color: #6b7280 !important; }
+body.light-mode .role-value     { color: #1a1a1a !important; }
+body.light-mode .value-standard { color: #1a1a1a !important; }
+
+body.light-mode .toggle-container {
+    background-color: rgba(0, 0, 0, 0.04) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+/* ── Heatmap ───────────────────────────────────────────────── */
+body.light-mode .heatmap-hour-label { color: #6b7280 !important; }
+body.light-mode .heatmap-cell-key {
+    background: rgba(0, 0, 0, 0.03) !important;
+    border-color: rgba(0, 0, 0, 0.06) !important;
+}
+body.light-mode .heatmap-key-labels { color: #374151 !important; }
+
+/* ── Misc ──────────────────────────────────────────────────── */
+body.light-mode .border-secondary { border-color: rgba(0, 0, 0, 0.12) !important; }
