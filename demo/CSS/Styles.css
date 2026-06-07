@@ -1,0 +1,1286 @@
+/* =============================================================================
+   CINEMASYNC PREMIUM THEME - MERGED STYLESHEET
+   =============================================================================
+   קובץ מאוחד משני הסגנונות של אביב ואור.
+   בסיס משותף + תוספות ייחודיות: עמוד מלאי מלא, עמוד שיבוץ סרטים.
+   ============================================================================= */
+
+/* --- ROOT: CSS VARIABLES --- */
+:root {
+    --bg-dark: #050505;                        /* Deep Black */
+    --bg-surface: #121212;                     /* Card Surface */
+    --primary-teal: #00CED1;
+    --glass-bg: rgba(30, 30, 30, 0.6);         /* See-through dark layer */
+    --glass-border: rgba(255, 255, 255, 0.08); /* Subtle white edge */
+    --neon-glow: 0 0 15px rgba(0, 206, 209, 0.25);
+}
+
+/* =============================================================================
+   SECTION 1: GLOBAL ATMOSPHERE
+   ============================================================================= */
+body {
+    background-color: var(--bg-dark) !important;
+    background-image: radial-gradient(circle at 15% 50%, rgba(0, 206, 209, 0.08) 0%, transparent 25%),
+                      radial-gradient(circle at 85% 30%, rgba(147, 51, 234, 0.05) 0%, transparent 25%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #ffffff !important;
+    min-height: 100vh;
+}
+
+h1, h2, h3, h4, h5, h6, .fw-bold {
+    color: #ffffff !important;
+    letter-spacing: -0.5px;
+}
+
+.text-muted, .small {
+    color: #9ca3af !important;
+}
+
+/* =============================================================================
+   SECTION 2: LOGO (PERFECT CIRCLE)
+   ============================================================================= */
+.logo-circle {
+    width: 140px;
+    height: 140px;
+    background-color: #ffffff;
+    border-radius: 50%;
+    margin: 0 auto 25px auto;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(0, 206, 209, 0.3);
+    border: 3px solid var(--primary-teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* =============================================================================
+   SECTION 3: GLASSMORPHISM CARDS (base surface look)
+   ============================================================================= */
+.card, .bg-surface, .modal-content, .role-card, .picker-container {
+    background-color: var(--glass-bg) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 24px !important;
+    box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.3);
+}
+
+/* Frosted-glass surface utility */
+.bg-dark-surface {
+    background-color: var(--glass-bg) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+/* =============================================================================
+   SECTION 4: MODERN INPUTS (pill style)
+   ============================================================================= */
+.form-control, .form-select, input {
+    background-color: rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid var(--glass-border) !important;
+    color: #ffffff !important;
+    border-radius: 12px !important;
+    padding: 12px 16px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    border-color: var(--primary-teal) !important;
+    box-shadow: var(--neon-glow) !important;
+    transform: translateY(-1px);
+}
+
+.input-group-text {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border-color: var(--glass-border) !important;
+    color: #aaa !important;
+}
+
+/* =============================================================================
+   SECTION 5: BUTTONS (pill shape, premium feel)
+   ============================================================================= */
+.btn {
+    border-radius: 50px !important;
+    padding: 10px 24px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+}
+
+.btn-teal {
+    background: linear-gradient(135deg, #00CED1 0%, #009ea1 100%) !important;
+    color: #050505 !important;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 206, 209, 0.3);
+}
+
+.btn-teal:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 206, 209, 0.5);
+}
+
+.btn-surface {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: white !important;
+}
+
+.btn-surface:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: white;
+    color: #fff !important;
+    transform: translateY(-2px);
+}
+
+/* =============================================================================
+   SECTION 6: INVENTORY PAGE - LAYOUT & STICKY ELEMENTS
+   =============================================================================
+   - Nav sticks to top (inherits Bootstrap sticky-top)
+   - Whole page scrolls naturally
+   - Sync button floats fixed at the bottom of the viewport
+   - Body reserves padding-bottom so the last card isn't hidden under the button
+   ============================================================================= */
+body.inventory-page {
+    padding-bottom: 70px;
+}
+
+.inventory-page nav.navbar {
+    margin-bottom: 0 !important;
+}
+
+.inventory-page nav.navbar.sticky-top {
+    background-color: var(--glass-bg) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    z-index: 1030;
+}
+
+/* Sticky search bar below the nav.
+   Wrapper is transparent; the visual frame lives on .search-inner
+   so the dark panel matches the input's width instead of spanning the row. */
+.inventory-page .search-wrapper {
+    position: sticky;
+    top: 68px;
+    z-index: 1025;
+    direction: rtl;
+    padding: 12px 0;
+    margin-bottom: 1rem;
+    pointer-events: none;
+}
+.inventory-page .search-wrapper > .search-inner {
+    pointer-events: auto;
+}
+.inventory-page .search-inner {
+    position: relative;
+    width: 33%;
+    min-width: 220px;
+    max-width: 380px;
+    margin-left: auto;
+    margin-right: 0;
+}
+.inventory-page .search-input {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.45) !important;
+    border: 1px solid var(--glass-border) !important;
+    color: #ffffff !important;
+    border-radius: 12px !important;
+    padding: 10px 44px 10px 40px;
+    font-size: 1rem;
+    transition: all 0.25s ease;
+    direction: rtl;
+    text-align: right;
+}
+.inventory-page .search-input:focus {
+    outline: none;
+    border-color: var(--primary-teal) !important;
+    box-shadow: var(--neon-glow);
+}
+.inventory-page .search-input::placeholder {
+    color: #9ca3af;
+}
+
+/* Category filter pills (below the search input) */
+.inventory-page .category-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+    direction: rtl;
+    justify-content: flex-start; /* in RTL, flex-start = right */
+    pointer-events: auto;
+}
+.inventory-page .category-pill {
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--glass-border);
+    color: #cbd5e1;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+.inventory-page .category-pill:hover {
+    border-color: var(--primary-teal);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+.inventory-page .category-pill.active {
+    background: linear-gradient(135deg, #0f766e, #2dd4bf);
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow: 0 2px 8px rgba(45, 212, 191, 0.35);
+}
+
+/* Hide the browser's native clear (✕) button on type="search" inputs */
+.inventory-page .search-input::-webkit-search-cancel-button,
+.inventory-page .search-input::-webkit-search-decoration,
+.inventory-page .search-input::-webkit-search-results-button,
+.inventory-page .search-input::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+}
+.inventory-page .search-input::-ms-clear {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+.inventory-page .search-wrapper .search-icon {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    transform: translateY(-50%);
+    color: var(--primary-teal);
+    pointer-events: none;
+    font-size: 0.95rem;
+}
+.inventory-page .btn-clear-search {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.08);
+    border: none;
+    color: #cbd5e1;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+.inventory-page .btn-clear-search:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+}
+
+/* Override inventory container behavior for the inventory page */
+.inventory-page #inventoryContainer {
+    max-height: none !important;
+    overflow-y: visible !important;
+    padding-right: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+/* Floating Sync button at bottom of viewport */
+body.inventory-page button#btnSync {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    right: auto !important;
+    transform: translateX(-50%);
+    width: 92% !important;
+    max-width: 420px;
+    z-index: 1020;
+    margin-top: 0 !important;
+    padding: 0.65rem 1rem !important;
+    font-size: 0.95rem !important;
+    line-height: 1.4 !important;
+    background: linear-gradient(135deg, #00CED1 0%, #009ea1 100%) !important;
+    background-color: #009ea1 !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(0, 206, 209, 0.4);
+}
+
+/* Match the card column widths at each breakpoint
+   (col-md-6 = ~50%, col-xl-4 = ~33%) */
+@media (min-width: 768px) {
+    body.inventory-page button#btnSync {
+        width: 48% !important;
+    }
+}
+@media (min-width: 1200px) {
+    body.inventory-page button#btnSync {
+        width: 32% !important;
+    }
+}
+
+/* =============================================================================
+   SECTION 7: INVENTORY - SCROLLBAR (enhanced teal gradient)
+   ============================================================================= */
+#inventoryContainer {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 14px;
+    padding-bottom: 20px;
+    scrollbar-width: auto;
+    scrollbar-color: #2dd4bf rgba(255, 255, 255, 0.06);
+}
+#inventoryContainer::-webkit-scrollbar {
+    width: 14px;
+}
+#inventoryContainer::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    margin: 4px 0;
+}
+#inventoryContainer::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #0f766e, #2dd4bf);
+    border-radius: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.4);
+    box-shadow: 0 0 6px rgba(45, 212, 191, 0.35);
+}
+#inventoryContainer::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #0f766e, #5eead4);
+    box-shadow: 0 0 10px rgba(45, 212, 191, 0.6);
+}
+
+/* =============================================================================
+   SECTION 8: INVENTORY - CARDS, BADGES, CATEGORY HEADERS
+   ============================================================================= */
+
+/* Supplier badge */
+.supplier-badge {
+    background-color: rgba(255,255,255,0.1) !important;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    font-weight: 500;
+    color: #fff !important;
+}
+
+/* Category header - gradient background with Font Awesome icon */
+.category-header {
+    direction: rtl;
+    display: block;
+    width: fit-content;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff !important;
+    padding: 8px 18px;
+    background: linear-gradient(135deg, #0f766e, #2dd4bf);
+    border-radius: 8px;
+    margin: 32px 0 16px auto;
+    box-shadow: 0 2px 8px rgba(45, 212, 191, 0.25);
+    letter-spacing: 0.5px;
+}
+.category-header::before {
+    content: "\f1ad";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-inline-end: 10px;
+}
+
+/* Product note (appears under the stock inputs on each card) */
+.product-note {
+    direction: rtl;
+    text-align: right;
+    background-color: rgba(45, 212, 191, 0.08);
+    border-right: 3px solid #2dd4bf;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin: 10px 0;
+    font-size: 0.9rem;
+    color: #cbd5e1;
+}
+.product-note::before {
+    content: "ⓘ ";
+    color: #2dd4bf;
+    margin-inline-end: 6px;
+    font-weight: bold;
+}
+/* Invisible placeholder - reserves the same vertical space so the
+   barcode line sits at the same height across all cards. */
+.product-note--empty {
+    visibility: hidden;
+}
+
+/* Product name - force RTL so Hebrew reads correctly */
+.product-name {
+    direction: rtl;
+    text-align: right;
+    unicode-bidi: plaintext;
+}
+
+/* Stock row (נוכחי / נדרש / חסר) - RTL so נוכחי is on the right */
+.inventory-card .stock-row {
+    direction: rtl;
+    text-align: right;
+}
+
+/* Standard value/label typography for inventory and manpower */
+.label-standard { color: var(--primary-teal) !important; font-weight: bold; text-transform: uppercase; font-size: 0.85rem; }
+.value-standard { color: white !important; font-size: 1.4rem; font-weight: bold; }
+
+/* Inventory Card - shadow, status border, hover */
+.inventory-card {
+    position: relative;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35) !important;
+    border-right: 4px solid #6b7280 !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-right-color 0.2s ease;
+}
+.inventory-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5) !important;
+}
+.inventory-card.stock-below { border-right-color: #ef4444 !important; }
+.inventory-card.stock-ok    { border-right-color: #4ade80 !important; }
+.inventory-card.stock-empty { border-right-color: #6b7280 !important; }
+
+/* Barcode display - labeled, monospace value */
+.barcode-display {
+    direction: rtl;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 0.85rem;
+}
+.barcode-display i {
+    color: var(--primary-teal);
+    font-size: 1rem;
+}
+.barcode-label {
+    color: #9ca3af;
+    font-weight: 500;
+}
+.barcode-value {
+    color: #ffffff;
+    font-family: 'Courier New', Consolas, monospace;
+    letter-spacing: 0.5px;
+}
+
+/* Last Count box - matches form-control height exactly */
+.box-last-count {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    font-size: 1.1rem;
+    background-color: rgba(0, 0, 0, 0.2) !important;
+    border: 1px solid var(--glass-border);
+    border-radius: 8px;
+    padding: 8px;
+    font-family: monospace;
+    color: #aaa;
+}
+
+/* =============================================================================
+   SECTION 9: MANPOWER OPTIMIZATION
+   ============================================================================= */
+.role-card {
+    text-align: center;
+    padding: 20px;
+    transition: transform 0.2s;
+}
+.role-card:hover {
+    border-color: var(--primary-teal) !important;
+    transform: translateY(-3px);
+}
+.role-icon {
+    color: #4ade80;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+.role-title { color: #b0b0b0; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+.role-value { color: #fff; font-size: 1.5rem; font-weight: bold; }
+
+/* Custom Toggle Switches */
+.toggle-container {
+    background-color: rgba(0,0,0,0.3);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Manpower-specific range slider */
+.form-range { height: 6px; background-color: #333; border-radius: 5px; }
+.form-range::-webkit-slider-thumb { background: #4ade80; width: 18px; height: 18px; margin-top: -6px; }
+
+/* Spacing fix for Manpower Slider */
+.spacing-fix {
+    margin-top: 3rem !important;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+/* =============================================================================
+   SECTION 10: DATE PICKER (invisible overlay click target)
+   ============================================================================= */
+.picker-container {
+    position: relative !important;
+    overflow: hidden;
+    cursor: pointer;
+}
+.picker-overlay {
+    position: absolute !important;
+    top: 0; left: 0; width: 100% !important; height: 100% !important;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* =============================================================================
+   SECTION 11: SCHEDULE STUDIO (drag & drop workspace)
+   ============================================================================= */
+.schedule-workspace {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 24px;
+    height: 65vh;
+    min-height: 500px;
+    align-items: stretch;
+    margin-bottom: 20px;
+}
+
+/* Container holding the Draggable Chips (inside Schedule Studio) */
+#movieDraggables {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 5px;
+    margin-top: 10px;
+}
+
+/* Draggable Items (Chips) */
+.draggable-item {
+    background: linear-gradient(90deg, #2c2c2c 0%, #222 100%);
+    border-left: 4px solid var(--primary-teal);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 10px;
+    cursor: grab;
+    color: white;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+}
+.draggable-item:hover { transform: translateX(5px); background: #333; }
+
+/* Right Panel: The Time Grid */
+.schedule-grid-container {
+    flex-grow: 1;
+    background-color: rgba(20, 20, 20, 0.4);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    overflow: auto;
+    position: relative;
+}
+
+.schedule-table {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: collapse;
+}
+
+.schedule-table th {
+    background-color: rgba(10, 10, 10, 0.95);
+    border-bottom: 1px solid var(--glass-border);
+    border-right: 1px solid var(--glass-border);
+    padding: 15px;
+    color: var(--primary-teal);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+}
+
+.schedule-table td {
+    border-right: 1px solid rgba(255,255,255,0.03);
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    height: 100px;
+    vertical-align: top;
+    padding: 5px;
+}
+.schedule-table td.drag-over {
+    background-color: rgba(0, 206, 209, 0.1) !important;
+    border: 2px dashed var(--primary-teal);
+}
+
+.scheduled-event {
+    background: linear-gradient(135deg, #00CED1 0%, #009ea1 100%);
+    color: #050505;
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 6px 12px;
+    border-radius: 8px;
+    margin-bottom: 4px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Mobile responsive for Schedule Studio */
+@media (max-width: 992px) {
+    .schedule-workspace {
+        flex-direction: column;
+        height: auto;
+    }
+}
+
+/* =============================================================================
+   SECTION 12: MOVIE SCHEDULING (main layout - movie library + scheduling area)
+   ============================================================================= */
+.scheduling-layout {
+    display: flex;
+    gap: 16px;
+    height: calc(100vh - 140px);
+    padding: 16px;
+}
+
+.movie-library {
+    width: 240px;
+    background: #1a1a1a;
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+}
+
+.movie-library-header h6 {
+    color: #00CED1;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.movie-library-header input {
+    margin-bottom: 10px;
+}
+
+.movie-list {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.movie-card {
+    background: #252525;
+    border-left: 3px solid #00CED1;
+    border-radius: 6px;
+    padding: 8px 10px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.movie-card:hover {
+    background: #2f2f2f;
+}
+
+.movie-card.selected {
+    background: #2f4f51;
+}
+
+.movie-card-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 2px;
+}
+
+.movie-card-meta {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.movie-loading,
+.movie-error {
+    color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+}
+
+.movie-error {
+    color: #ff6b6b;
+}
+
+.movie-count {
+    margin-top: 8px;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.4);
+    text-align: center;
+}
+
+.scheduling-area {
+    flex: 1;
+    background: #1a1a1a;
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.context-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: #fff;
+}
+
+.context-bar .separator {
+    color: rgba(255, 255, 255, 0.3);
+    margin: 0 8px;
+}
+
+.scheduling-placeholder {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.3);
+    font-style: italic;
+}
+
+.prediction-panel {
+    flex: 1;
+    padding: 8px 4px;
+    overflow-y: auto;
+}
+
+.prediction-panel .form-control {
+    background-color: #ffffff;
+    color: #212529;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: text;
+}
+
+.prediction-panel .form-control:focus {
+    background-color: #ffffff;
+    color: #212529;
+    border-color: #00CED1;
+    box-shadow: 0 0 0 0.2rem rgba(0, 206, 209, 0.25);
+}
+
+.prediction-panel input[type="date"],
+.prediction-panel input[type="time"] {
+    cursor: pointer;
+}
+
+.prediction-panel input[type="date"]::-webkit-calendar-picker-indicator,
+.prediction-panel input[type="time"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 1;
+}
+
+.prediction-panel .bg-surface {
+    background: #1a1a1a;
+}
+
+.prediction-panel .border-teal {
+    border-color: #00CED1 !important;
+}
+
+.prediction-panel .text-teal {
+    color: #00CED1 !important;
+}
+
+.prediction-panel .btn-teal {
+    background: #00CED1;
+    color: #0f0f0f;
+    border: none;
+}
+
+.prediction-panel .btn-teal:hover:not(:disabled) {
+    background: #00b8bb;
+    color: #0f0f0f;
+}
+
+.prediction-panel .btn-teal:disabled {
+    opacity: 0.7;
+}
+
+.prediction-panel .bg-teal {
+    background-color: #00CED1 !important;
+}
+
+.predict-day-picker {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.predict-day-card {
+    flex: 1;
+    min-width: 70px;
+    background: #2a2a2a;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 10px 6px;
+    color: #f8f9fa;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.15s ease-in-out, border-color 0.15s ease-in-out, color 0.15s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.predict-day-card:hover {
+    background: #3a3a3a;
+    border-color: rgba(0, 206, 209, 0.5);
+}
+
+.predict-day-card.selected {
+    background: rgba(0, 206, 209, 0.18);
+    border-color: #00CED1;
+    color: #00CED1;
+}
+
+.predict-day-name {
+    font-size: 11px;
+    text-transform: uppercase;
+    opacity: 0.75;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.predict-day-num {
+    font-size: 22px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.predict-day-month {
+    font-size: 10px;
+    opacity: 0.65;
+    text-transform: uppercase;
+}
+
+.prediction-panel .form-select {
+    background-color: #ffffff;
+    color: #212529;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.prediction-panel .form-select:focus {
+    background-color: #ffffff;
+    color: #212529;
+    border-color: #00CED1;
+    box-shadow: 0 0 0 0.2rem rgba(0, 206, 209, 0.25);
+}
+
+.predict-time-toggle {
+    background-color: #ffffff;
+    color: #212529;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    text-align: left;
+    padding: 0.375rem 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.predict-time-toggle:hover,
+.predict-time-toggle:focus,
+.predict-time-toggle.show {
+    background-color: #ffffff;
+    color: #212529;
+    border-color: #00CED1;
+    box-shadow: 0 0 0 0.2rem rgba(0, 206, 209, 0.25);
+}
+
+.predict-time-menu {
+    max-height: 200px;
+    overflow-y: auto;
+    min-width: 110px;
+    padding: 4px 0;
+    background-color: #ffffff;
+}
+
+.predict-time-menu .dropdown-item {
+    padding: 4px 12px;
+    color: #212529;
+    cursor: pointer;
+}
+
+.predict-time-menu .dropdown-item:hover,
+.predict-time-menu .dropdown-item:focus {
+    background-color: rgba(0, 206, 209, 0.15);
+    color: #0a8b8e;
+}
+
+.prediction-howto {
+    background: rgba(0, 206, 209, 0.06);
+    border: 1px solid rgba(0, 206, 209, 0.25);
+    border-radius: 8px;
+    padding: 8px 12px;
+}
+
+.prediction-howto > summary {
+    cursor: pointer;
+    color: #00CED1;
+    font-weight: bold;
+    font-size: 13px;
+    user-select: none;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.prediction-howto > summary::before {
+    content: "\25B6";
+    font-size: 9px;
+    transition: transform 0.15s ease;
+    display: inline-block;
+}
+
+.prediction-howto[open] > summary::before {
+    transform: rotate(90deg);
+}
+
+.prediction-howto .howto-body {
+    padding-top: 10px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.prediction-howto .howto-body p {
+    margin-bottom: 8px;
+}
+
+.factors-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.factor-row {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 13px;
+}
+
+.factor-row:last-child {
+    border-bottom: none;
+}
+
+.factor-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.factor-label {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.factor-value {
+    font-weight: bold;
+    font-variant-numeric: tabular-nums;
+    min-width: 70px;
+    text-align: right;
+}
+
+.factor-explanation {
+    color: #94a3b8;
+    font-size: 11.5px;
+    line-height: 1.5;
+    padding-right: 2px;
+}
+
+.factor-positive {
+    color: #00CED1;
+}
+
+.factor-negative {
+    color: #ff8d8d;
+}
+
+.factor-empty {
+    list-style: none;
+    padding: 8px 0;
+}
+
+.suggestions-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.suggestion-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    background: rgba(0, 206, 209, 0.07);
+    border: 1px solid rgba(0, 206, 209, 0.2);
+    border-radius: 6px;
+    margin-bottom: 6px;
+    font-size: 13px;
+}
+
+.suggestion-row:last-child {
+    margin-bottom: 0;
+}
+
+.suggestion-icon {
+    color: #00CED1;
+    flex: 0 0 18px;
+    text-align: center;
+}
+
+.suggestion-text {
+    flex: 1;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.suggestion-delta {
+    color: #00CED1;
+    font-weight: bold;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.suggestion-target {
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: normal;
+    margin-left: 2px;
+}
+
+/* =============================================================================
+   SECTION 13: AI FEEDBACK & CHECKBOXES
+   ============================================================================= */
+
+/* AI Feedback Card */
+#aiFeedbackCard {
+    background-color: #080808 !important;
+    border: 1px solid var(--primary-teal) !important;
+    border-left: 5px solid var(--primary-teal) !important;
+    color: #fff !important;
+    border-radius: 12px !important;
+    box-shadow: 0 10px 40px rgba(0, 206, 209, 0.1);
+}
+#aiFeedbackCard .btn-close { filter: invert(1); }
+#scheduleSetupModal .btn-close { filter: invert(1); }
+
+/* Checkboxes (AI Parameters) - aligned and themed */
+.form-check-input {
+    width: 1.3em;
+    height: 1.3em;
+    margin-top: 0.2em;
+    border: 1px solid rgba(255,255,255,0.3) !important;
+    background-color: rgba(0,0,0,0.5) !important;
+    cursor: pointer;
+}
+
+.form-check-input:checked {
+    background-color: var(--primary-teal) !important;
+    border-color: var(--primary-teal) !important;
+    box-shadow: 0 0 10px rgba(0, 206, 209, 0.4) !important;
+}
+
+/* Subtle glass background around AI strategy checkbox cards */
+#aiStrategyForm .form-check {
+    background-color: rgba(255,255,255,0.03) !important;
+    border: 1px solid rgba(255,255,255,0.05) !important;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+/* =============================================================================
+   SECTION 14: ICON BACKGROUNDS (soft color variants)
+   ============================================================================= */
+.bg-blue-soft   { background-color: rgba(59, 130, 246, 0.2); color: #60a5fa !important; }
+.bg-purple-soft { background-color: rgba(147, 51, 234, 0.2); color: #a855f7 !important; }
+.bg-green-soft  { background-color: rgba(34, 197, 94, 0.2);  color: #4ade80 !important; }
+.bg-gray-soft   { background-color: rgba(255, 255, 255, 0.1); color: #9ca3af !important; }
+
+.icon-box {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+/* =============================================================================
+   SECTION 15: UTILITIES, HELPERS & ANIMATIONS
+   ============================================================================= */
+
+/* Helper text colors */
+.text-teal    { color: var(--primary-teal) !important; }
+.text-green   { color: #4ade80 !important; }
+.text-danger  { color: #f87171 !important; }
+.text-success { color: #4ade80 !important; }
+
+.cursor-pointer { cursor: pointer; }
+
+/* Fade-in animation */
+.animate-slide-in { animation: fadeInUp 0.5s ease-out forwards; }
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* =============================================================================
+   SECTION 16: WEEKLY HEATMAP
+   ============================================================================= */
+
+.heatmap-section { margin-top: 16px; }
+.heatmap-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+}
+.heatmap-grid {
+    display: grid;
+    grid-template-columns: 70px repeat(7, 1fr);
+    gap: 4px;
+    margin-top: 8px;
+}
+.heatmap-corner {
+    background: transparent;
+}
+.heatmap-day-header,
+.heatmap-hour-label {
+    padding: 8px 4px;
+    text-align: center;
+    color: var(--primary-teal, #5eead4);
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+.heatmap-hour-label {
+    text-align: right;
+    padding-right: 10px;
+    color: #9ca3af;
+}
+.heatmap-cell {
+    padding: 10px 4px;
+    text-align: center;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    border: 2px solid transparent;
+    font-size: 0.95rem;
+    position: relative;
+}
+.cell-rank {
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    font-size: 0.75rem;
+    line-height: 1;
+    text-shadow: 0 0 3px rgba(0,0,0,0.6);
+}
+.rank-gold   { color: #fde047; }
+.rank-silver { color: #e5e7eb; }
+.rank-bronze { color: #fb923c; }
+.heatmap-cell .cell-sub {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 400;
+    opacity: 0.85;
+    margin-top: 2px;
+}
+.heatmap-cell:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(255,255,255,0.4);
+    z-index: 2;
+}
+.heatmap-cell.active {
+    border-color: #fff;
+    box-shadow: 0 0 12px rgba(255,255,255,0.6);
+}
+.heatmap-legend {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+    font-size: 0.8rem;
+    color: #9ca3af;
+}
+.heatmap-legend-bar {
+    width: 140px;
+    height: 10px;
+    background: linear-gradient(to right, hsl(200,12%,22%), hsl(160,50%,40%), hsl(120,80%,57%));
+    border-radius: 5px;
+}
+.heatmap-cell-key {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 12px 0;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.heatmap-key-sample {
+    flex-shrink: 0;
+    width: 64px;
+    padding: 8px 4px;
+    text-align: center;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.95rem;
+    background: hsl(160, 55%, 42%);
+}
+.heatmap-key-sample .cell-sub {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 400;
+    opacity: 0.85;
+    margin-top: 2px;
+}
+.heatmap-key-labels {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color: #cbd5e1;
+    font-size: 0.85rem;
+    line-height: 1.6;
+}

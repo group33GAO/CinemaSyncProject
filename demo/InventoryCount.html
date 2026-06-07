@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CinemaSync - ספירת מלאי</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+    <link rel="stylesheet" href="CSS/Styles.css" />
+  </head>
+
+  <body class="bg-dark text-light inventory-page">
+    <nav class="navbar navbar-dark bg-dark-surface border-bottom border-secondary sticky-top mb-4" dir="ltr">
+      <div class="container-fluid d-flex justify-content-between align-items-center">
+
+        <a href="index.html" class="btn btn-link text-light p-0" aria-label="חזרה לדשבורד">
+          <i class="fa-solid fa-arrow-left fa-lg"></i>
+        </a>
+
+        <div class="text-center">
+          <h5 class="m-0 fw-bold">ספירת מלאי</h5>
+          <small class="text-teal fw-bold shadow-sm" id="navBranchDisplay"></small>
+        </div>
+
+        <a href="#" class="btn btn-link text-danger p-0 btn-logout" title="Log Out">
+          <i class="fa-solid fa-power-off fa-lg"></i>
+        </a>
+      </div>
+    </nav>
+
+    <section id="inventoryScreen" class="screen p-3">
+      <div class="search-wrapper">
+        <div class="search-inner">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="search" id="inventorySearch" class="search-input"
+                 placeholder="חיפוש מוצר, ספק או ברקוד..." dir="rtl" autocomplete="off" />
+          <button type="button" class="btn-clear-search" id="btnClearSearch" aria-label="נקה">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="category-filters" id="categoryFilters">
+          <button type="button" class="category-pill active" data-category="all">הכל</button>
+          <button type="button" class="category-pill" data-category="drinks">שתייה</button>
+          <button type="button" class="category-pill" data-category="sweets">ממתקים</button>
+          <button type="button" class="category-pill" data-category="icecream">גלידה</button>
+          <button type="button" class="category-pill" data-category="snacks">חטיפים</button>
+          <button type="button" class="category-pill" data-category="disposables">חד-פעמי</button>
+          <button type="button" class="category-pill" data-category="merch">מרצ׳נדייז</button>
+          <button type="button" class="category-pill" data-category="other">אחר</button>
+        </div>
+      </div>
+
+      <div class="inventory-list" id="inventoryContainer"></div>
+
+      <button class="btn btn-teal w-100 mt-4 fw-bold p-3" id="btnSync" aria-label="Sync to BIGGERPICTURE">
+        <i class="fa-solid fa-arrows-rotate me-2"></i> סנכרון ל-BIGGERPICTURE
+      </button>
+    </section>
+
+    <div class="toast-container position-fixed top-0 start-0 p-3" style="z-index: 9999">
+      <div id="liveToast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body fs-6">
+            <i class="fa-solid fa-circle-check me-2"></i>
+            הנתונים סונכרנו בהצלחה ל-BIGGERPICTURE!
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="JS/mockData.js"></script>
+    <script src="JS/inventoryData.js"></script>
+    <script src="JS/inventoryCount-demo.js"></script>
+  </body>
+</html>
