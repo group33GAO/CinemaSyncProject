@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CinemaSync - Dashboard</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+    <link rel="stylesheet" href="CSS/Styles.css" />
+  </head>
+
+  <body class="bg-dark text-light">
+    <nav id="appHeader" class="navbar navbar-dark bg-dark-surface border-bottom border-secondary sticky-top" dir="ltr">
+      <div class="container-fluid d-flex justify-content-between align-items-center">
+        <span class="p-0" style="width: 24px;"></span>
+
+        <div class="text-center">
+          <h5 class="m-0 fw-bold" id="hdrGreeting">Hello</h5>
+          <small class="text-teal" id="hdrBranch"></small>
+        </div>
+
+        <button class="btn btn-link text-danger p-0" id="btnLogout" title="Log Out" aria-label="Log Out">
+          <i class="fa-solid fa-power-off fa-lg"></i>
+        </button>
+      </div>
+    </nav>
+
+    <section id="dashboardScreen" class="screen container mt-4">
+      <div class="row g-3">
+        <div class="col-12" id="moduleInventory">
+          <a href="InventoryCount.html" class="text-decoration-none text-light">
+            <div class="card bg-surface border-0 h-100 module-card">
+              <div class="card-body d-flex align-items-center">
+                <div class="icon-box bg-blue-soft text-blue me-3">
+                  <i class="fa-solid fa-boxes-stacked"></i>
+                </div>
+                <div>
+                  <h5 class="card-title fw-bold mb-1">ספירת מלאי</h5>
+                  <p class="card-text text-muted small">סנכרון מלאי מול המטה</p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-12" id="moduleScheduling">
+          <a href="MovieScheduling.html" class="text-decoration-none text-light">
+            <div class="card bg-surface border-0 h-100 module-card">
+              <div class="card-body d-flex align-items-center">
+                <div class="icon-box bg-purple-soft text-purple me-3">
+                  <i class="fa-regular fa-calendar-days"></i>
+                </div>
+                <div>
+                  <h5 class="card-title fw-bold mb-1">שיבוץ סרטים</h5>
+                  <p class="card-text text-muted small">שיבוץ חכם מבוסס אלגוריתם</p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+
+        <div class="col-12" id="moduleManpower">
+          <a href="ManPowerOptimization.html" class="text-decoration-none text-light">
+            <div class="card bg-surface border-0 h-100 module-card">
+              <div class="card-body d-flex align-items-center">
+                <div class="icon-box bg-green-soft text-green me-3">
+                  <i class="fa-solid fa-users"></i>
+                </div>
+                <div>
+                  <h5 class="card-title fw-bold mb-1">אופטימיזציית כוח אדם</h5>
+                  <p class="card-text text-muted small">חישוב כמות עובדים נדרשת למשמרת</p>
+                </div>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="JS/mockData.js"></script>
+    <script src="JS/dashboard-demo.js"></script>
+  </body>
+</html>

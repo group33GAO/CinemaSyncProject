@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CinemaSync - שיבוץ סרטים</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+    <link rel="stylesheet" href="CSS/Styles.css" />
+  </head>
+
+  <body class="bg-dark text-light">
+    <nav id="appHeader" class="navbar navbar-dark bg-dark border-bottom border-secondary sticky-top" dir="ltr">
+      <div class="container-fluid d-flex justify-content-between align-items-center">
+        <a href="#" id="btnBack" class="btn btn-link text-light p-0" aria-label="Go back to Dashboard">
+          <i class="fa-solid fa-arrow-left fa-lg"></i>
+        </a>
+
+        <div class="text-center">
+          <h5 class="m-0 fw-bold" id="hdrGreeting"></h5>
+          <small class="text-teal" id="hdrBranch"></small>
+        </div>
+
+        <button class="btn btn-link text-danger p-0" id="btnLogout" title="Log Out" aria-label="Log Out">
+          <i class="fa-solid fa-power-off fa-lg"></i>
+        </button>
+      </div>
+    </nav>
+
+    <section id="schedulingMain" class="d-none">
+      <div class="scheduling-layout">
+
+        <aside class="movie-library">
+          <div class="movie-library-header">
+            <h6>ספריית סרטים</h6>
+            <input type="text" id="inputMovieSearch" class="form-control form-control-sm" placeholder="חיפוש סרטים..." />
+          </div>
+          <div id="movieLoadingState" class="movie-loading">טוען סרטים...</div>
+          <div id="movieErrorState" class="movie-error d-none"></div>
+          <div id="movieList" class="movie-list"></div>
+          <div id="movieCount" class="movie-count"></div>
+        </aside>
+
+        <main class="scheduling-area">
+          <div class="context-bar">
+            <div>
+              <strong>שבוע: </strong><span id="ctxWeekDisplay"></span>
+              <span class="separator">·</span>
+              <strong>אולם: </strong><span id="ctxVenueDisplay"></span>
+            </div>
+            <button id="btnChangeContext" class="btn btn-sm btn-outline-light" aria-label="שנה שבוע או אולם">שנה שבוע/אולם</button>
+          </div>
+          <div class="prediction-panel">
+            <h5 class="mb-2"><i class="fa-solid fa-wand-magic-sparkles text-teal me-2"></i>שיבוץ סרטים חכם</h5>
+            <p class="text-muted small mb-2">בחר סרט מהספרייה, צור מפת שיבוץ שבועית וקבל תחזית תפוסה לאולם הנבחר.</p>
+
+            <details class="prediction-howto mb-3" dir="rtl" lang="he">
+              <summary>כיצד התחזית עובדת?</summary>
+              <div class="howto-body">
+                <p>המודל הוא <strong>Random Forest</strong> — אנסמבל של 200 עצי החלטה שאומנו על כ-238,000 הקרנות היסטוריות מ-Hot Cinema. כל עץ "שואל שאלות" על הסרט וההקרנה (איזה ז'אנר? איזה אולם? איזו שעה?) ומגיע לחיזוי משלו. התחזית הסופית היא הממוצע של כל 200 העצים.</p>
+                <p>בכל תחזית, השרת בונה תיאור של ההקרנה ב-81 פיצ'רים (קיבולת האולם, הסניף, היום, השעה, ז'אנר/ים, אורך הסרט, חודש, עונה, וכו'), מעביר אותם למודל שרץ ב-Python (FastAPI), ומקבל בחזרה את מספר הכרטיסים הצפוי.</p>
+                <p>היתרון של Random Forest על פני רגרסיה לינארית הוא היכולת ללכוד <strong>קשרים לא-לינאריים</strong> — לדוגמה, ש"סרט פעולה בערב שישי" מתנהג שונה מ"סרט פעולה בבוקר ראשון", גם אם הז'אנר זהה.</p>
+                <p class="text-muted small mb-0">ביצועי המודל: <strong>MAE ≈ 8.5</strong> כרטיסים סטייה ממוצעת, <strong>R² ≈ 0.57</strong> (המודל מסביר 57% מהשונות במכירות). שאר 43% תלויים בגורמים שהמודל לא רואה: שיווק, ביקורות, מזג אוויר, ואירועים מתחרים.</p>
+              </div>
+            </details>
+
+            <div class="mb-3">
+              <button class="btn btn-teal fw-bold w-100" id="btnGenerateHeatmap" aria-label="צור מפת שיבוץ שבועית">
+                <i class="fa-solid fa-table-cells me-2"></i>צור מפת שיבוץ שבועית
+              </button>
+              <small class="text-muted d-block mt-2">בחר סרט מהספרייה, ואז לחץ כדי לחזות כל שעתיים על פני 7 ימים.</small>
+            </div>
+
+            <div id="predictionError" class="alert alert-danger d-none" role="alert"></div>
+
+            <div id="heatmapSection" class="heatmap-section d-none card bg-surface border border-teal">
+              <div class="card-body">
+                <div class="heatmap-header">
+                  <div>
+                    <h6 class="m-0">מפת שיבוץ עבור: <span id="heatmapMovieName" class="text-teal"></span></h6>
+                    <small class="text-muted">קיבולת: <span id="heatmapCapacity"></span> מקומות &nbsp;·&nbsp; טווח: <span id="heatmapRange"></span></small>
+                  </div>
+                  <div class="heatmap-legend">
+                    <span>שיבוץ מצוין</span>
+                    <span class="heatmap-legend-bar"></span>
+                    <span>שיבוץ חלש</span>
+                  </div>
+                </div>
+                <div class="heatmap-cell-key">
+                  <div class="heatmap-key-sample">
+                    34
+                    <span class="cell-sub">23%</span>
+                  </div>
+                  <ul class="heatmap-key-labels mb-0">
+                    <li><strong class="text-light">34</strong> — מושבים שצפויים להתמלא</li>
+                    <li><strong class="text-light">23%</strong> — אחוז תפוסת האולם</li>
+                  </ul>
+                </div>
+                <div class="heatmap-grid" id="heatmapGrid"></div>
+                <small class="text-muted d-block mt-3">לחץ על תא כדי לראות פירוט גורמים אשר השפיעו על החיזוי ליום ולשעה הספציפיים</small>
+              </div>
+            </div>
+
+            <div id="predictionResult" class="card bg-surface border border-teal d-none">
+              <div class="card-body">
+                <div class="d-flex align-items-baseline gap-3 mb-2">
+                  <span id="predictPercent" class="display-4 fw-bold text-teal"></span>
+                  <span class="text-muted">תפוסה צפויה</span>
+                </div>
+                <div class="mb-3">
+                  <span id="predictAttendees" class="fw-bold"></span>
+                  <span class="text-muted"> צופים צפויים מתוך </span>
+                  <span id="predictCapacity" class="fw-bold"></span>
+                  <span class="text-muted"> מקומות</span>
+                </div>
+                <div class="progress" style="height: 8px;">
+                  <div id="predictProgress" class="progress-bar bg-teal" role="progressbar" style="width: 0%"></div>
+                </div>
+                <div class="small text-muted mt-3">
+                  סרט: <span id="predictMovieName" class="text-light"></span>
+                </div>
+
+                <hr class="border-secondary my-3" />
+
+                <ul id="predictFactors" class="factors-list"></ul>
+              </div>
+            </div>
+          </div>
+        </main>
+
+      </div>
+    </section>
+
+    <div class="modal fade" id="scheduleSetupModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content text-white">
+          <div class="modal-header border-secondary">
+            <h5 class="modal-title fw-bold">
+              <i class="fa-regular fa-calendar-plus text-teal me-2"></i>תחילת שיבוץ חדש
+            </h5>
+            <button type="button" class="btn-close btn-close-white" id="btnCloseModal" aria-label="סגור"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="inputWeekStart" class="form-label fw-bold">בחר שבוע - ראשון עד שבת</label>
+              <select id="inputWeekStart" class="form-select"></select>
+              <small class="text-muted d-block mt-1">מוצגים השבוע הנוכחי ו-12 השבועות הקרובים.</small>
+            </div>
+            <div class="mb-3">
+              <label for="selectVenue" class="form-label fw-bold">מספר אולם</label>
+              <select id="selectVenue" class="form-select">
+                <option value="">-- בחר אולם --</option>
+              </select>
+              <small class="text-muted">ניתן להחליף את האולם הנבחר בכל שלב בתהליך.</small>
+            </div>
+            <div id="modalError" class="alert alert-danger d-none mb-0" role="alert"></div>
+          </div>
+          <div class="modal-footer border-secondary justify-content-start">
+            <button type="button" class="btn btn-teal fw-bold px-4" id="btnStartScheduling" aria-label="התחל שיבוץ">
+              <i class="fa-solid fa-play me-2"></i>התחל שיבוץ
+            </button>
+            <button type="button" class="btn btn-outline-light" id="btnCancelSetup" aria-label="ביטול">ביטול</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="JS/mockData.js"></script>
+    <script src="JS/movieScheduling-demo.js"></script>
+  </body>
+</html>
