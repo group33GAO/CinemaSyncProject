@@ -172,10 +172,10 @@ namespace CinemaSyncServer.Models
 
         private static string HourToTimeSlot(int hour)
         {
+            if (hour == 0 || hour >= 21) return "Night";
             if (hour < 12) return "Morning";
             if (hour < 17) return "Noon";
-            if (hour < 21) return "Evening";
-            return "Night";
+            return "Evening";
         }
 
         private static int DayOfWeekToIsraeli(DayOfWeek dow)

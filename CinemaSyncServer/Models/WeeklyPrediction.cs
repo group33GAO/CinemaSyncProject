@@ -6,7 +6,7 @@ namespace CinemaSyncServer.Models
 {
     public class WeeklyPrediction
     {
-        private static readonly int[] Hours = new int[] { 10, 12, 14, 16, 18, 20, 22 };
+        private static readonly int[] Hours = new int[] { 10, 12, 14, 16, 18, 20, 22, 23 };
 
         public static WeeklyPredictionResult Predict(WeeklyPredictionRequest req, MapiService mapiService, PythonPredictorClient predictor)
         {
@@ -25,8 +25,8 @@ namespace CinemaSyncServer.Models
 
             DateTime weekStart = req.WeekStartDate.Date;
 
-            List<PythonPredictionPayload> payloads = new List<PythonPredictionPayload>(49);
-            List<DateTime> slotTimes = new List<DateTime>(49);
+            List<PythonPredictionPayload> payloads = new List<PythonPredictionPayload>(56);
+            List<DateTime> slotTimes = new List<DateTime>(56);
 
             for (int d = 0; d < 7; d++)
             {

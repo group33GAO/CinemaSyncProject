@@ -1433,6 +1433,16 @@ body.light-mode .context-bar {
     border-color: rgba(0, 0, 0, 0.1) !important;
 }
 body.light-mode .context-bar .separator { color: rgba(0, 0, 0, 0.3) !important; }
+body.light-mode .context-bar .btn-outline-light {
+    color: #374151 !important;
+    border-color: #9ca3af !important;
+    background: transparent !important;
+}
+body.light-mode .context-bar .btn-outline-light:hover {
+    background: #374151 !important;
+    color: #ffffff !important;
+    border-color: #374151 !important;
+}
 body.light-mode .scheduling-placeholder { color: rgba(0, 0, 0, 0.35) !important; }
 
 body.light-mode .schedule-grid-container {
@@ -1509,3 +1519,318 @@ body.light-mode .heatmap-key-labels { color: #374151 !important; }
 
 /* ── Misc ──────────────────────────────────────────────────── */
 body.light-mode .border-secondary { border-color: rgba(0, 0, 0, 0.12) !important; }
+
+/* =============================================================================
+   SECTION 18: BRANCH SMART SCHEDULING
+   ============================================================================= */
+
+.branch-scheduling-layout {
+    display: flex;
+    gap: 16px;
+    height: calc(100vh - 112px);
+    padding: 16px;
+}
+
+/* Left ranked panel */
+.ranked-panel {
+    width: 260px;
+    flex-shrink: 0;
+    background: #1a1a1a;
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.ranked-panel-header h6 {
+    color: #00CED1;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+}
+
+.ranked-list {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.ranked-movie-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    background: #252525;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+}
+
+.rank-badge {
+    flex-shrink: 0;
+    font-size: 10px;
+    font-weight: 700;
+    color: #050505;
+    background: #9ca3af;
+    border-radius: 4px;
+    padding: 2px 5px;
+    min-width: 26px;
+    text-align: center;
+    margin-top: 1px;
+}
+
+.rank-badge.rank-1 { background: #fde047; }
+.rank-badge.rank-2 { background: #e5e7eb; }
+.rank-badge.rank-3 { background: #fb923c; }
+
+.ranked-movie-info { flex: 1; min-width: 0; }
+
+.ranked-movie-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ranked-movie-meta {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.45);
+    margin-top: 1px;
+}
+
+.ranked-avg-tickets {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 700;
+    color: #00CED1;
+    white-space: nowrap;
+}
+
+/* Right schedule area */
+.branch-schedule-area {
+    flex: 1;
+    background: #1a1a1a;
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Loading overlay */
+.branch-loading-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 10, 10, 0.85);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+/* Placeholder */
+.branch-schedule-placeholder {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.5);
+    padding: 32px;
+    text-align: center;
+}
+
+.branch-schedule-placeholder p {
+    font-size: 14px;
+    max-width: 360px;
+    margin-bottom: 20px;
+}
+
+/* Venue selector bar */
+.venue-selector-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    flex-shrink: 0;
+}
+
+.venue-selector {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+    overflow-x: auto;
+    flex: 1;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+    padding-bottom: 2px;
+}
+
+.venue-pill {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    white-space: nowrap;
+    text-align: right;
+}
+
+.venue-pill:hover:not(.active) {
+    background: rgba(0, 206, 209, 0.06);
+    border-color: rgba(0, 206, 209, 0.35);
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.venue-pill.active {
+    background: rgba(0, 206, 209, 0.13);
+    border-color: #00CED1;
+    color: #00CED1;
+}
+
+.venue-pill-icon {
+    font-size: 13px;
+    opacity: 0.75;
+    flex-shrink: 0;
+}
+
+.venue-pill.active .venue-pill-icon {
+    opacity: 1;
+}
+
+.venue-pill-name {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.venue-pill-count {
+    font-size: 11px;
+    font-weight: 400;
+    opacity: 0.65;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 1px 7px;
+}
+
+.venue-pill.active .venue-pill-count {
+    background: rgba(0, 206, 209, 0.18);
+    opacity: 1;
+}
+
+/* Venue tab content */
+.branch-tab-content {
+    flex: 1;
+    overflow: auto;
+    padding: 12px 16px 16px;
+}
+
+/* Schedule grid (per venue) */
+.branch-schedule-grid {
+    display: grid;
+    grid-template-columns: 64px repeat(7, 1fr);
+    gap: 3px;
+    min-width: 600px;
+}
+
+.branch-sch-corner { background: transparent; }
+
+.branch-sch-day-header {
+    padding: 6px 4px;
+    text-align: center;
+    color: var(--primary-teal);
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.branch-sch-hour-label {
+    padding: 6px 4px;
+    text-align: right;
+    color: #9ca3af;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.branch-sch-cell {
+    padding: 6px 5px;
+    border-radius: 5px;
+    text-align: center;
+    min-height: 52px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+    transition: transform 0.1s ease;
+    border: 2px solid transparent;
+}
+
+.branch-sch-cell:hover {
+    transform: scale(1.04);
+    z-index: 2;
+    border-color: rgba(255,255,255,0.3);
+}
+
+.branch-sch-cell.empty {
+    background: #2a2a2a !important;
+    color: rgba(255,255,255,0.2);
+    font-size: 0.9rem;
+}
+
+.branch-sch-cell-title {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.2;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.branch-sch-cell-occ {
+    font-size: 0.65rem;
+    font-weight: 400;
+    opacity: 0.8;
+    margin-top: 2px;
+    color: #fff;
+}
+
+/* Light mode overrides */
+body.light-mode .ranked-panel,
+body.light-mode .branch-schedule-area {
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light-mode .ranked-movie-item  { background: #f3f4f6 !important; }
+body.light-mode .ranked-movie-title { color: #1a1a1a !important; }
+body.light-mode .ranked-movie-meta  { color: rgba(0,0,0,0.45) !important; }
+
+body.light-mode .branch-loading-overlay { background: rgba(240,244,248,0.9) !important; }
+body.light-mode .branch-sch-hour-label  { color: #6b7280 !important; }
+body.light-mode .branch-sch-cell.empty  { background: #f3f4f6 !important; }
+
+body.light-mode .venue-selector-bar     { border-bottom-color: rgba(0,0,0,0.08) !important; }
+body.light-mode .venue-pill             { background: #f3f4f6 !important; border-color: rgba(0,0,0,0.12) !important; color: rgba(0,0,0,0.5) !important; }
+body.light-mode .venue-pill:hover:not(.active) { background: rgba(0,150,153,0.06) !important; border-color: rgba(0,150,153,0.35) !important; color: rgba(0,0,0,0.8) !important; }
+body.light-mode .venue-pill.active      { background: rgba(0,150,153,0.1) !important; border-color: #009699 !important; color: #007a7d !important; }
+body.light-mode .venue-pill-count       { background: rgba(0,0,0,0.07) !important; }
