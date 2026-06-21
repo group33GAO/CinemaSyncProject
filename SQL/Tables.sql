@@ -230,3 +230,40 @@ BEGIN
     (N'7290900000066', N'כרטיסי גיפט קארד זוגי + פופקורן ושתיה', 1, N'פריטים נוספים', NULL, 50, N'קבלה באמצעות מנהל האיזור מהמשרד');
 END;
 GO
+
+-- ---------------------------------------------------------
+-- InventoryCounts (named inventory count sessions per branch)
+-- ---------------------------------------------------------
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'InventoryCounts')
+BEGIN
+    CREATE TABLE InventoryCounts
+    (
+        CountId    INT           IDENTITY(1,1) NOT NULL PRIMARY KEY,
+        BranchCode INT           NOT NULL,
+        CountName  NVARCHAR(200) NOT NULL,
+        CreatedAt  DATETIME2     NOT NULL DEFAULT SYSDATETIME(),
+        IsPrimary  BIT           NOT NULL DEFAULT 0,
+        CONSTRAINT FK_InventoryCounts_Branches FOREIGN KEY (BranchCode)
+            REFERENCES Branches(BranchCode)
+    );
+END;
+GO
+
+-- ---------------------------------------------------------
+-- InventoryCountItems (product stock snapshot per count session)
+-- ---------------------------------------------------------
+IF NOT EXISTS (SELECT 1 FROM sys.tables WHERE name = 'InventoryCountItems')
+BEGIN
+    CREATE TABLE InventoryCountItems
+    (
+        CountId      INT NOT NULL,
+        ProductId    INT NOT NULL,
+        StockAtCount INT NOT NULL DEFAULT 0,
+        CONSTRAINT PK_InventoryCountItems PRIMARY KEY (CountId, ProductId),
+        CONSTRAINT FK_InventoryCountItems_Counts FOREIGN KEY (CountId)
+            REFERENCES InventoryCounts(CountId),
+        CONSTRAINT FK_InventoryCountItems_Products FOREIGN KEY (ProductId)
+            REFERENCES Products(ProductId)
+    );
+END;
+GO

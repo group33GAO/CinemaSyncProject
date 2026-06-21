@@ -885,5 +885,232 @@ namespace CinemaSyncServer.DAL
                 }
             }
         }
+
+        //--------------------------------------------------------------------------------------------------
+        // This method returns all named inventory count sessions for a branch
+        //--------------------------------------------------------------------------------------------------
+        public List<InventoryCount> GetInventoryCountsByBranch(int branchCode)
+        {
+            SqlConnection con = null;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB");
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+
+            Dictionary<string, object> paramDic = new Dictionary<string, object>();
+            paramDic.Add("@BranchCode", branchCode);
+            cmd = CreateCommandWithStoredProcedureGeneral("SP_InventoryCounts_GetByBranch", con, paramDic);
+
+            try
+            {
+                List<InventoryCount> counts = new List<InventoryCount>();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    InventoryCount c = new InventoryCount();
+                    c.CountId = Convert.ToInt32(reader["CountId"]);
+                    c.BranchCode = Convert.ToInt32(reader["BranchCode"]);
+                    c.CountName = reader["CountName"].ToString();
+                    c.CreatedAt = Convert.ToDateTime(reader["CreatedAt"]);
+                    c.IsPrimary = Convert.ToBoolean(reader["IsPrimary"]);
+                    counts.Add(c);
+                }
+                return counts;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+        }
+
+        //--------------------------------------------------------------------------------------------------
+        // This method creates a new inventory count session, sets it as primary, and returns the CountId
+        //--------------------------------------------------------------------------------------------------
+        public int CreateInventoryCount(int branchCode, string countName, bool isPrimary)
+        {
+            SqlConnection con = null;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB");
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+
+            Dictionary<string, object> paramDic = new Dictionary<string, object>();
+            paramDic.Add("@BranchCode", branchCode);
+            paramDic.Add("@CountName", countName);
+            paramDic.Add("@IsPrimary", isPrimary);
+            cmd = CreateCommandWithStoredProcedureGeneral("SP_InventoryCounts_Create", con, paramDic);
+
+            try
+            {
+                int countId = Convert.ToInt32(cmd.ExecuteScalar());
+                return countId;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+        }
+
+        //--------------------------------------------------------------------------------------------------
+        // This method sets a specific count as primary and clears all other counts for the same branch
+        //--------------------------------------------------------------------------------------------------
+        public int SetInventoryCountPrimary(int countId, int branchCode)
+        {
+            SqlConnection con = null;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB");
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+
+            Dictionary<string, object> paramDic = new Dictionary<string, object>();
+            paramDic.Add("@CountId", countId);
+            paramDic.Add("@BranchCode", branchCode);
+            cmd = CreateCommandWithStoredProcedureGeneral("SP_InventoryCounts_SetPrimary", con, paramDic);
+
+            try
+            {
+                int rowsAffected = Convert.ToInt32(cmd.ExecuteScalar());
+                return rowsAffected;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+        }
+
+        //--------------------------------------------------------------------------------------------------
+        // This method inserts a single product stock entry for an inventory count session
+        //--------------------------------------------------------------------------------------------------
+        public int InsertInventoryCountItem(int countId, int productId, int stockAtCount)
+        {
+            SqlConnection con = null;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB");
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+
+            Dictionary<string, object> paramDic = new Dictionary<string, object>();
+            paramDic.Add("@CountId", countId);
+            paramDic.Add("@ProductId", productId);
+            paramDic.Add("@StockAtCount", stockAtCount);
+            cmd = CreateCommandWithStoredProcedureGeneral("SP_InventoryCountItems_Insert", con, paramDic);
+
+            try
+            {
+                int rowsAffected = Convert.ToInt32(cmd.ExecuteScalar());
+                return rowsAffected;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+        }
+
+        //--------------------------------------------------------------------------------------------------
+        // This method returns all product items for a given inventory count session
+        //--------------------------------------------------------------------------------------------------
+        public List<InventoryCountItem> GetInventoryCountItems(int countId)
+        {
+            SqlConnection con = null;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB");
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+
+            Dictionary<string, object> paramDic = new Dictionary<string, object>();
+            paramDic.Add("@CountId", countId);
+            cmd = CreateCommandWithStoredProcedureGeneral("SP_InventoryCountItems_GetByCount", con, paramDic);
+
+            try
+            {
+                List<InventoryCountItem> items = new List<InventoryCountItem>();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    InventoryCountItem item = new InventoryCountItem();
+                    item.CountId = Convert.ToInt32(reader["CountId"]);
+                    item.ProductId = Convert.ToInt32(reader["ProductId"]);
+                    item.StockAtCount = Convert.ToInt32(reader["StockAtCount"]);
+                    item.ProductName = reader["ProductName"].ToString();
+                    item.Supplier = reader["Supplier"].ToString();
+                    item.Barcode = reader["Barcode"] == DBNull.Value ? null : reader["Barcode"].ToString();
+                    item.Notes = reader["Notes"] == DBNull.Value ? null : reader["Notes"].ToString();
+                    item.UnitsPerPackage = Convert.ToInt32(reader["UnitsPerPackage"]);
+                    item.SupplierMinOrder = reader["SupplierMinOrder"] == DBNull.Value ? null : reader["SupplierMinOrder"].ToString();
+                    item.RequiredStock = reader["RequiredStock"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["RequiredStock"]);
+                    items.Add(item);
+                }
+                return items;
+            }
+            catch (Exception ex)
+            {
+                throw (ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+        }
     }
 }

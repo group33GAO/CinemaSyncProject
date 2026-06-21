@@ -171,9 +171,14 @@ body.inventory-page {
     top: 68px;
     z-index: 1025;
     direction: rtl;
-    padding: 12px 0;
+    padding: 12px 0 10px;
     margin-bottom: 1rem;
     pointer-events: none;
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 .inventory-page .search-wrapper > .search-inner {
     pointer-events: auto;
@@ -1834,3 +1839,74 @@ body.light-mode .venue-pill             { background: #f3f4f6 !important; border
 body.light-mode .venue-pill:hover:not(.active) { background: rgba(0,150,153,0.06) !important; border-color: rgba(0,150,153,0.35) !important; color: rgba(0,0,0,0.8) !important; }
 body.light-mode .venue-pill.active      { background: rgba(0,150,153,0.1) !important; border-color: #009699 !important; color: #007a7d !important; }
 body.light-mode .venue-pill-count       { background: rgba(0,0,0,0.07) !important; }
+
+/* =============================================================================
+   SECTION - INVENTORY MANAGEMENT - COUNT SESSION CARDS
+   ============================================================================= */
+
+.count-session-card {
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--glass-border);
+    border-right: 4px solid var(--primary-teal);
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.count-session-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.btn-outline-teal {
+    background: transparent !important;
+    color: var(--primary-teal) !important;
+    border: 1px solid var(--primary-teal) !important;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.btn-outline-teal:hover:not(:disabled) {
+    background: rgba(0, 206, 209, 0.15) !important;
+}
+
+.btn-outline-teal:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.badge.bg-teal {
+    background-color: var(--primary-teal) !important;
+    color: #050505;
+}
+
+body.light-mode .count-session-card {
+    background-color: #f8fafc;
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+body.inventory-page button#btnSaveCount {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    right: auto !important;
+    transform: translateX(-50%);
+    width: 92% !important;
+    max-width: 420px;
+    z-index: 1020;
+    margin-top: 0 !important;
+    padding: 0.65rem 1rem !important;
+    font-size: 0.95rem !important;
+    line-height: 1.4 !important;
+}
+
+@media (min-width: 768px) {
+    body.inventory-page button#btnSaveCount {
+        width: 48% !important;
+    }
+}
+
+@media (min-width: 1200px) {
+    body.inventory-page button#btnSaveCount {
+        width: 32% !important;
+    }
+}

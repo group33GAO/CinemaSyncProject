@@ -282,3 +282,104 @@ BEGIN
     WHERE VenueId = @VenueId;
 END;
 GO
+
+-- =========================================================
+-- Inventory Counts
+-- =========================================================
+
+CREATE OR ALTER PROCEDURE SP_InventoryCounts_GetByBranch
+    @BranchCode INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT CountId, BranchCode, CountName, CreatedAt, IsPrimary
+    FROM InventoryCounts
+    WHERE BranchCode = @BranchCode
+    ORDER BY CreatedAt DESC;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE SP_InventoryCounts_Create
+    @BranchCode INT,
+    @CountName  NVARCHAR(200),
+    @IsPrimary  BIT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF @IsPrimary = 1
+    BEGIN
+        UPDATE InventoryCounts
+        SET IsPrimary = 0
+        WHERE BranchCode = @BranchCode;
+    END
+
+    INSERT INTO InventoryCounts (BranchCode, CountName, IsPrimary)
+    VALUES (@BranchCode, @CountName, @IsPrimary);
+
+    SELECT CAST(SCOPE_IDENTITY() AS INT) AS CountId;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE SP_InventoryCounts_SetPrimary
+    @CountId    INT,
+    @BranchCode INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE InventoryCounts
+    SET IsPrimary = 0
+    WHERE BranchCode = @BranchCode;
+
+    UPDATE InventoryCounts
+    SET IsPrimary = 1
+    WHERE CountId = @CountId AND BranchCode = @BranchCode;
+
+    SELECT @@ROWCOUNT AS RowsAffected;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE SP_InventoryCountItems_Insert
+    @CountId      INT,
+    @ProductId    INT,
+    @StockAtCount INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    INSERT INTO InventoryCountItems (CountId, ProductId, StockAtCount)
+    VALUES (@CountId, @ProductId, @StockAtCount);
+
+    SELECT @@ROWCOUNT AS RowsAffected;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE SP_InventoryCountItems_GetByCount
+    @CountId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+    SELECT
+        ci.CountId,
+        ci.ProductId,
+        ci.StockAtCount,
+        p.ProductName,
+        p.Supplier,
+        p.Barcode,
+        p.Notes,
+        p.UnitsPerPackage,
+        p.SupplierMinOrder,
+        ISNULL(bi.RequiredStock, p.DefaultRequiredStock) AS RequiredStock
+    FROM InventoryCountItems ci
+    INNER JOIN Products p ON p.ProductId = ci.ProductId
+    LEFT JOIN BranchInventory bi
+        ON bi.ProductId = ci.ProductId
+        AND bi.BranchCode = (SELECT BranchCode FROM InventoryCounts WHERE CountId = @CountId)
+    WHERE ci.CountId = @CountId
+    ORDER BY
+        CASE WHEN p.Supplier = N'החברה המרכזית' THEN 0 ELSE 1 END,
+        p.Supplier,
+        p.ProductName;
+END;
+GO
