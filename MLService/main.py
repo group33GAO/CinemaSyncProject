@@ -13,15 +13,20 @@ BASE_DIR = Path(__file__).parent
 MODEL_PATH = BASE_DIR / "cinema_model.pkl"
 COLUMNS_PATH = BASE_DIR / "columns.json"
 
-print("Loading model... (may take 10-30 seconds for the 2.4GB file)")
+print("Loading model... (may take 10-30 seconds for the 2.4GB file)", flush=True)
 model = joblib.load(MODEL_PATH)
 with open(COLUMNS_PATH, "r", encoding="utf-8") as f:
     COLUMNS = json.load(f)
-print(f"Loaded. Features: {len(COLUMNS)}")
+print(f"Loaded. Features: {len(COLUMNS)}", flush=True)
 
-print("Initializing SHAP TreeExplainer... (may take 30-60 seconds)")
+print("Initializing SHAP TreeExplainer... (may take 30-60 seconds)", flush=True)
 explainer = shap.TreeExplainer(model)
-print(f"SHAP ready. Base value (expected prediction): {float(explainer.expected_value):.2f}")
+print(f"SHAP ready. Base value (expected prediction): {float(explainer.expected_value):.2f}", flush=True)
+
+print("=" * 62, flush=True)
+print("  MODEL + ALGORITHM READY  -  CinemaSync ML service is up", flush=True)
+print("  Listening on http://127.0.0.1:8000  -  safe to run scheduling", flush=True)
+print("=" * 62, flush=True)
 
 app = FastAPI(title="CinemaSync ML Service")
 
@@ -369,16 +374,53 @@ def build_feature_row(req: PredictionRequest) -> pd.DataFrame:
     return pd.DataFrame([row], columns=COLUMNS)
 
 
+# One-hot groups where exactly one value is active. Their dummies are aggregated
+# into a single factor for the ACTIVE category, so inactive (=0) dummies never
+# surface as confusing "had it been X" counterfactuals.
+SINGLE_SELECT_PREFIXES = ("Cinema_", "Season_", "TimeSlot_", "Country_", "Month_")
+
+
 def compute_top_factors(features_df: pd.DataFrame, top_n: int = 8) -> List[FactorContribution]:
     shap_array = explainer.shap_values(features_df, approximate=True, check_additivity=False)
     shap_row = np.asarray(shap_array).reshape(-1)
     input_row = features_df.iloc[0].values
 
-    pairs = []
+    values = {}
     for i, col in enumerate(COLUMNS):
-        sv = float(shap_row[i])
-        iv = float(input_row[i])
-        pairs.append((col, iv, sv))
+        values[col] = (float(input_row[i]), float(shap_row[i]))
+
+    pairs = []
+    consumed = set()
+
+    for prefix in SINGLE_SELECT_PREFIXES:
+        group = [c for c in COLUMNS if c.startswith(prefix)]
+        if not group:
+            continue
+        group_shap = 0.0
+        active = None
+        for c in group:
+            iv, sv = values[c]
+            group_shap += sv
+            consumed.add(c)
+            if iv == 1:
+                active = c
+        if active is not None:
+            pairs.append((active, 1.0, group_shap))
+
+    # Genres are multi-select: keep each ACTIVE genre on its own, drop inactive dummies.
+    for c in COLUMNS:
+        if not c.startswith("Genre_"):
+            continue
+        consumed.add(c)
+        iv, sv = values[c]
+        if iv == 1:
+            pairs.append((c, iv, sv))
+
+    for c in COLUMNS:
+        if c in consumed:
+            continue
+        iv, sv = values[c]
+        pairs.append((c, iv, sv))
 
     pairs.sort(key=lambda p: abs(p[2]), reverse=True)
     top = pairs[:top_n]

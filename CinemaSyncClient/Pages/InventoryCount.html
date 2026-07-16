@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CinemaSync - ניהול מלאי</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" />
+    <link rel="stylesheet" href="../CSS/Styles.css" />
+  </head>
+
+  <body class="bg-dark text-light inventory-page">
+
+    <nav class="navbar navbar-dark bg-dark-surface border-bottom border-secondary sticky-top mb-4">
+      <div class="container-fluid d-flex justify-content-between align-items-center">
+        <button id="btnNavBack" class="btn btn-link text-light p-0">
+          <i class="fa-solid fa-arrow-left fa-lg"></i>
+        </button>
+        <div class="text-center">
+          <h5 class="m-0 fw-bold">ניהול מלאי</h5>
+          <small class="text-teal fw-bold shadow-sm" id="navBranchDisplay"></small>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <button type="button" id="btnThemeToggle" class="btn btn-link text-light p-0" title="Toggle Theme" aria-label="Toggle Theme">
+            <i class="fa-solid fa-sun fa-lg" id="themeIcon"></i>
+          </button>
+          <a href="#" class="btn btn-link text-danger p-0 btn-logout" title="Log Out">
+            <i class="fa-solid fa-power-off fa-lg"></i>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- VIEW 1: Counts List -->
+    <section id="viewCountsList" class="screen p-3">
+      <div class="d-flex justify-content-between align-items-center mb-3" dir="rtl">
+        <h6 class="fw-bold mb-0 text-teal">ספירות שמורות</h6>
+        <button id="btnNewCount" class="btn btn-teal btn-sm px-3">
+          <i class="fa-solid fa-plus me-1"></i> ספירה חדשה
+        </button>
+      </div>
+      <div id="countsListContainer"></div>
+    </section>
+
+    <!-- VIEW 2: Count Detail (read-only) -->
+    <section id="viewCountDetail" class="screen p-3" style="display:none">
+      <div class="d-flex justify-content-between align-items-center mb-3" dir="rtl">
+        <div class="text-start">
+          <div id="countDetailTitle" class="fw-bold fs-5"></div>
+          <small id="countDetailDate" class="text-muted"></small>
+        </div>
+        <button id="btnSetPrimary" class="btn btn-outline-teal btn-sm px-3">
+          <i class="fa-solid fa-star me-1"></i> הגדר כעיקרי
+        </button>
+      </div>
+      <div class="search-wrapper">
+        <div class="search-inner">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="search" id="detailSearch" class="search-input"
+                 placeholder="חיפוש מוצר, ספק או ברקוד..." dir="rtl" autocomplete="off" />
+          <button type="button" class="btn-clear-search" id="btnClearDetailSearch" aria-label="נקה">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="category-filters" id="detailFilters">
+          <button type="button" class="category-pill active" data-category="all">הכל</button>
+          <button type="button" class="category-pill" data-category="drinks">שתייה</button>
+          <button type="button" class="category-pill" data-category="sweets">ממתקים</button>
+          <button type="button" class="category-pill" data-category="icecream">גלידה</button>
+          <button type="button" class="category-pill" data-category="snacks">חטיפים</button>
+          <button type="button" class="category-pill" data-category="disposables">חד-פעמי</button>
+          <button type="button" class="category-pill" data-category="merch">מרצ׳נדייז</button>
+          <button type="button" class="category-pill" data-category="other">אחר</button>
+        </div>
+      </div>
+      <div class="inventory-list" id="countDetailContainer"></div>
+      <button class="btn btn-teal w-100 mt-4 fw-bold p-3" id="btnSaveCountEdit">
+        <i class="fa-solid fa-floppy-disk me-2"></i> שמור שינויים
+      </button>
+    </section>
+
+    <!-- VIEW 3: New Count (editable) -->
+    <section id="viewNewCount" class="screen p-3" style="display:none">
+      <div class="search-wrapper">
+        <div class="search-inner">
+          <i class="fa-solid fa-magnifying-glass search-icon"></i>
+          <input type="search" id="newCountSearch" class="search-input"
+                 placeholder="חיפוש מוצר, ספק או ברקוד..." dir="rtl" autocomplete="off" />
+          <button type="button" class="btn-clear-search" id="btnClearNewSearch" aria-label="נקה">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        <div class="category-filters" id="newCountFilters">
+          <button type="button" class="category-pill active" data-category="all">הכל</button>
+          <button type="button" class="category-pill" data-category="drinks">שתייה</button>
+          <button type="button" class="category-pill" data-category="sweets">ממתקים</button>
+          <button type="button" class="category-pill" data-category="icecream">גלידה</button>
+          <button type="button" class="category-pill" data-category="snacks">חטיפים</button>
+          <button type="button" class="category-pill" data-category="disposables">חד-פעמי</button>
+          <button type="button" class="category-pill" data-category="merch">מרצ׳נדייז</button>
+          <button type="button" class="category-pill" data-category="other">אחר</button>
+        </div>
+      </div>
+      <div class="inventory-list" id="newCountContainer"></div>
+      <button class="btn btn-teal w-100 mt-4 fw-bold p-3" id="btnSaveCount">
+        <i class="fa-solid fa-floppy-disk me-2"></i> שמור ספירה
+      </button>
+    </section>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../JS/JavaScript.js"></script>
+    <script src="../JS/inventoryCount.js"></script>
+  </body>
+</html>

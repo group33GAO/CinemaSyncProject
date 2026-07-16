@@ -1284,3 +1284,637 @@ body.inventory-page button#btnSync {
     font-size: 0.85rem;
     line-height: 1.6;
 }
+
+/* =============================================================================
+   SECTION 17: LIGHT MODE
+   ============================================================================= */
+
+body.light-mode {
+    --bg-dark: #f0f4f8;
+    --bg-surface: #ffffff;
+    --glass-bg: rgba(255, 255, 255, 0.92);
+    --glass-border: rgba(0, 0, 0, 0.1);
+    background-color: #f0f4f8 !important;
+    background-image: radial-gradient(circle at 15% 50%, rgba(0, 206, 209, 0.06) 0%, transparent 25%),
+                      radial-gradient(circle at 85% 30%, rgba(147, 51, 234, 0.04) 0%, transparent 25%);
+    color: #1a1a1a !important;
+}
+
+body.light-mode h1,
+body.light-mode h2,
+body.light-mode h3,
+body.light-mode h4,
+body.light-mode h5,
+body.light-mode h6,
+body.light-mode .fw-bold {
+    color: #1a1a1a !important;
+}
+
+body.light-mode .text-muted,
+body.light-mode .small {
+    color: #6b7280 !important;
+}
+
+body.light-mode .text-white {
+    color: #1a1a1a !important;
+}
+
+/* ── Navbar ────────────────────────────────────────────────── */
+body.light-mode .navbar,
+body.light-mode .bg-dark-surface {
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light-mode .navbar .btn-link.text-light,
+body.light-mode .navbar a.text-light {
+    color: #374151 !important;
+}
+
+body.light-mode #btnThemeToggle {
+    color: #374151 !important;
+}
+
+/* ── Cards and surfaces ────────────────────────────────────── */
+body.light-mode .card,
+body.light-mode .bg-surface,
+body.light-mode .modal-content,
+body.light-mode .role-card,
+body.light-mode .picker-container {
+    background-color: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* ── Inputs ────────────────────────────────────────────────── */
+body.light-mode .form-control,
+body.light-mode .form-select,
+body.light-mode input:not([type="checkbox"]):not([type="radio"]) {
+    background-color: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.15) !important;
+    color: #1a1a1a !important;
+}
+
+body.light-mode .form-control::placeholder,
+body.light-mode input::placeholder {
+    color: #9ca3af !important;
+}
+
+body.light-mode .input-group-text {
+    background-color: #f3f4f6 !important;
+    border-color: rgba(0, 0, 0, 0.15) !important;
+    color: #6b7280 !important;
+}
+
+body.light-mode .btn-surface {
+    background: rgba(0, 0, 0, 0.05) !important;
+    border-color: rgba(0, 0, 0, 0.15) !important;
+    color: #1a1a1a !important;
+}
+
+/* ── Inventory ─────────────────────────────────────────────── */
+body.light-mode .inventory-page .search-input {
+    background-color: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.15) !important;
+    color: #1a1a1a !important;
+}
+
+body.light-mode .inventory-page .search-input::placeholder {
+    color: #9ca3af !important;
+}
+
+body.light-mode .inventory-page .category-pill {
+    background-color: #f3f4f6 !important;
+    border-color: rgba(0, 0, 0, 0.12) !important;
+    color: #374151 !important;
+}
+
+body.light-mode .supplier-badge {
+    background-color: rgba(0, 0, 0, 0.06) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    color: #374151 !important;
+}
+
+body.light-mode .barcode-display {
+    background-color: rgba(0, 0, 0, 0.03) !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+body.light-mode .barcode-label { color: #6b7280 !important; }
+body.light-mode .barcode-value { color: #1a1a1a !important; }
+
+body.light-mode .box-last-count {
+    background-color: #f3f4f6 !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+    color: #6b7280 !important;
+}
+
+body.light-mode .product-note {
+    background-color: rgba(45, 212, 191, 0.06) !important;
+    color: #374151 !important;
+}
+
+/* ── Scheduling (drag & drop studio) ──────────────────────── */
+body.light-mode .movie-library,
+body.light-mode .scheduling-area {
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light-mode .movie-card        { background: #f3f4f6 !important; }
+body.light-mode .movie-card:hover  { background: #e9ecef !important; }
+body.light-mode .movie-card-title  { color: #1a1a1a !important; }
+body.light-mode .movie-card-meta   { color: rgba(0, 0, 0, 0.5) !important; }
+body.light-mode .movie-count,
+body.light-mode .movie-loading     { color: rgba(0, 0, 0, 0.5) !important; }
+
+body.light-mode .context-bar {
+    color: #1a1a1a !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+body.light-mode .context-bar .separator { color: rgba(0, 0, 0, 0.3) !important; }
+body.light-mode .context-bar .btn-outline-light {
+    color: #374151 !important;
+    border-color: #9ca3af !important;
+    background: transparent !important;
+}
+body.light-mode .context-bar .btn-outline-light:hover {
+    background: #374151 !important;
+    color: #ffffff !important;
+    border-color: #374151 !important;
+}
+body.light-mode .scheduling-placeholder { color: rgba(0, 0, 0, 0.35) !important; }
+
+body.light-mode .schedule-grid-container {
+    background-color: #f0f4f8 !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light-mode .schedule-table th {
+    background-color: #e9ecef !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+body.light-mode .schedule-table td {
+    border-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light-mode .draggable-item {
+    background: linear-gradient(90deg, #f3f4f6 0%, #e9ecef 100%) !important;
+    color: #1a1a1a !important;
+}
+body.light-mode .draggable-item:hover { background: #e2e8f0 !important; }
+
+/* ── Prediction panel ──────────────────────────────────────── */
+body.light-mode .predict-day-card {
+    background: #f3f4f6 !important;
+    border-color: rgba(0, 0, 0, 0.12) !important;
+    color: #1a1a1a !important;
+}
+body.light-mode .predict-day-card:hover { background: #e9ecef !important; }
+
+body.light-mode .prediction-panel .bg-surface { background: #ffffff !important; }
+
+body.light-mode .factor-label       { color: rgba(0, 0, 0, 0.85) !important; }
+body.light-mode .factor-explanation { color: #6b7280 !important; }
+body.light-mode .factor-row         { border-color: rgba(0, 0, 0, 0.08) !important; }
+body.light-mode .suggestion-text    { color: rgba(0, 0, 0, 0.9) !important; }
+body.light-mode .prediction-howto .howto-body { color: rgba(0, 0, 0, 0.85) !important; }
+
+/* ── AI feedback / checkboxes ──────────────────────────────── */
+body.light-mode #aiFeedbackCard {
+    background-color: #f8f9fa !important;
+    color: #1a1a1a !important;
+}
+body.light-mode #aiFeedbackCard .btn-close,
+body.light-mode #scheduleSetupModal .btn-close { filter: none !important; }
+
+body.light-mode .form-check-input {
+    background-color: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.25) !important;
+}
+body.light-mode #aiStrategyForm .form-check {
+    background-color: rgba(0, 0, 0, 0.02) !important;
+    border-color: rgba(0, 0, 0, 0.08) !important;
+}
+body.light-mode .form-check-label { color: #1a1a1a !important; }
+
+/* ── Manpower ──────────────────────────────────────────────── */
+body.light-mode .role-title     { color: #6b7280 !important; }
+body.light-mode .role-value     { color: #1a1a1a !important; }
+body.light-mode .value-standard { color: #1a1a1a !important; }
+
+body.light-mode .toggle-container {
+    background-color: rgba(0, 0, 0, 0.04) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+/* ── Heatmap ───────────────────────────────────────────────── */
+body.light-mode .heatmap-hour-label { color: #6b7280 !important; }
+body.light-mode .heatmap-cell-key {
+    background: rgba(0, 0, 0, 0.03) !important;
+    border-color: rgba(0, 0, 0, 0.06) !important;
+}
+body.light-mode .heatmap-key-labels { color: #374151 !important; }
+
+/* ── Misc ──────────────────────────────────────────────────── */
+body.light-mode .border-secondary { border-color: rgba(0, 0, 0, 0.12) !important; }
+
+/* =============================================================================
+   SECTION 18: BRANCH SMART SCHEDULING
+   ============================================================================= */
+
+.branch-scheduling-layout {
+    display: flex;
+    gap: 16px;
+    height: calc(100vh - 112px);
+    padding: 16px;
+}
+
+/* Left ranked panel */
+.ranked-panel {
+    width: 260px;
+    flex-shrink: 0;
+    background: #1a1a1a;
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.ranked-panel-header h6 {
+    color: #00CED1;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+}
+
+.ranked-list {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 10px;
+}
+
+.ranked-movie-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    background: #252525;
+    border-radius: 6px;
+    padding: 8px 10px;
+    font-size: 12px;
+}
+
+.rank-badge {
+    flex-shrink: 0;
+    font-size: 10px;
+    font-weight: 700;
+    color: #050505;
+    background: #9ca3af;
+    border-radius: 4px;
+    padding: 2px 5px;
+    min-width: 26px;
+    text-align: center;
+    margin-top: 1px;
+}
+
+.rank-badge.rank-1 { background: #fde047; }
+.rank-badge.rank-2 { background: #e5e7eb; }
+.rank-badge.rank-3 { background: #fb923c; }
+
+.ranked-movie-info { flex: 1; min-width: 0; }
+
+.ranked-movie-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ranked-movie-meta {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.45);
+    margin-top: 1px;
+}
+
+.ranked-avg-tickets {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 700;
+    color: #00CED1;
+    white-space: nowrap;
+}
+
+/* Right schedule area */
+.branch-schedule-area {
+    flex: 1;
+    background: #1a1a1a;
+    border: 0.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Loading overlay */
+.branch-loading-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 10, 10, 0.85);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+}
+
+/* Placeholder */
+.branch-schedule-placeholder {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.5);
+    padding: 32px;
+    text-align: center;
+}
+
+.branch-schedule-placeholder p {
+    font-size: 14px;
+    max-width: 360px;
+    margin-bottom: 20px;
+}
+
+/* Venue selector bar */
+.venue-selector-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    flex-shrink: 0;
+}
+
+.venue-selector {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 8px;
+    overflow-x: auto;
+    flex: 1;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+    padding-bottom: 2px;
+}
+
+.venue-pill {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1.5px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    white-space: nowrap;
+    text-align: right;
+}
+
+.venue-pill:hover:not(.active) {
+    background: rgba(0, 206, 209, 0.06);
+    border-color: rgba(0, 206, 209, 0.35);
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.venue-pill.active {
+    background: rgba(0, 206, 209, 0.13);
+    border-color: #00CED1;
+    color: #00CED1;
+}
+
+.venue-pill-icon {
+    font-size: 13px;
+    opacity: 0.75;
+    flex-shrink: 0;
+}
+
+.venue-pill.active .venue-pill-icon {
+    opacity: 1;
+}
+
+.venue-pill-name {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.venue-pill-count {
+    font-size: 11px;
+    font-weight: 400;
+    opacity: 0.65;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 1px 7px;
+}
+
+.venue-pill.active .venue-pill-count {
+    background: rgba(0, 206, 209, 0.18);
+    opacity: 1;
+}
+
+/* Venue tab content */
+.branch-tab-content {
+    flex: 1;
+    overflow: auto;
+    padding: 12px 16px 16px;
+}
+
+/* Schedule grid (per venue) */
+.branch-schedule-grid {
+    display: grid;
+    grid-template-columns: 64px repeat(7, 1fr);
+    gap: 3px;
+    min-width: 600px;
+}
+
+.branch-sch-corner { background: transparent; }
+
+.branch-sch-day-header {
+    padding: 6px 4px;
+    text-align: center;
+    color: var(--primary-teal);
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.branch-sch-hour-label {
+    padding: 6px 4px;
+    text-align: right;
+    color: #9ca3af;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.branch-sch-cell {
+    padding: 6px 5px;
+    border-radius: 5px;
+    text-align: center;
+    min-height: 52px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+    transition: transform 0.1s ease;
+    border: 2px solid transparent;
+}
+
+.branch-sch-cell:hover {
+    transform: scale(1.04);
+    z-index: 2;
+    border-color: rgba(255,255,255,0.3);
+}
+
+.branch-sch-cell.clickable {
+    cursor: pointer;
+}
+
+.branch-sch-cell.empty {
+    background: #2a2a2a !important;
+    color: rgba(255,255,255,0.2);
+    font-size: 0.9rem;
+}
+
+.branch-sch-cell-title {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.2;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+}
+
+.branch-sch-cell-occ {
+    font-size: 0.65rem;
+    font-weight: 400;
+    opacity: 0.8;
+    margin-top: 2px;
+    color: #fff;
+}
+
+/* Light mode overrides */
+body.light-mode .ranked-panel,
+body.light-mode .branch-schedule-area {
+    background: #ffffff !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+body.light-mode .ranked-movie-item  { background: #f3f4f6 !important; }
+body.light-mode .ranked-movie-title { color: #1a1a1a !important; }
+body.light-mode .ranked-movie-meta  { color: rgba(0,0,0,0.45) !important; }
+
+body.light-mode .branch-loading-overlay { background: rgba(240,244,248,0.9) !important; }
+body.light-mode .branch-sch-hour-label  { color: #6b7280 !important; }
+body.light-mode .branch-sch-cell.empty  { background: #f3f4f6 !important; }
+
+body.light-mode .venue-selector-bar     { border-bottom-color: rgba(0,0,0,0.08) !important; }
+body.light-mode .venue-pill             { background: #f3f4f6 !important; border-color: rgba(0,0,0,0.12) !important; color: rgba(0,0,0,0.5) !important; }
+body.light-mode .venue-pill:hover:not(.active) { background: rgba(0,150,153,0.06) !important; border-color: rgba(0,150,153,0.35) !important; color: rgba(0,0,0,0.8) !important; }
+body.light-mode .venue-pill.active      { background: rgba(0,150,153,0.1) !important; border-color: #009699 !important; color: #007a7d !important; }
+body.light-mode .venue-pill-count       { background: rgba(0,0,0,0.07) !important; }
+
+    padding: 12px 0 10px;
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+/* =============================================================================
+   SECTION - INVENTORY MANAGEMENT - COUNT SESSION CARDS
+   ============================================================================= */
+
+.count-session-card {
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--glass-border);
+    border-right: 4px solid var(--primary-teal);
+    border-radius: 12px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.count-session-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.btn-outline-teal {
+    background: transparent !important;
+    color: var(--primary-teal) !important;
+    border: 1px solid var(--primary-teal) !important;
+    border-radius: 8px;
+    transition: background 0.2s ease;
+}
+
+.btn-outline-teal:hover:not(:disabled) {
+    background: rgba(0, 206, 209, 0.15) !important;
+}
+
+.btn-outline-teal:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.badge.bg-teal {
+    background-color: var(--primary-teal) !important;
+    color: #050505;
+}
+
+body.light-mode .count-session-card {
+    background-color: #f8fafc;
+    border-color: rgba(0, 0, 0, 0.08);
+}
+
+body.inventory-page button#btnSaveCount,
+body.inventory-page button#btnSaveCountEdit {
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    right: auto !important;
+    transform: translateX(-50%);
+    width: 92% !important;
+    max-width: 420px;
+    z-index: 1020;
+    margin-top: 0 !important;
+    padding: 0.65rem 1rem !important;
+    font-size: 0.95rem !important;
+    line-height: 1.4 !important;
+}
+
+@media (min-width: 768px) {
+    body.inventory-page button#btnSaveCount,
+    body.inventory-page button#btnSaveCountEdit {
+        width: 48% !important;
+    }
+}
+
+@media (min-width: 1200px) {
+    body.inventory-page button#btnSaveCount,
+    body.inventory-page button#btnSaveCountEdit {
+        width: 32% !important;
+    }
+}

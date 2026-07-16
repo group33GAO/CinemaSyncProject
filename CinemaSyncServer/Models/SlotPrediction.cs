@@ -21,6 +21,23 @@ namespace CinemaSyncServer.Models
             "Sci_Fi", "Short", "Sport", "Thriller", "War", "Western"
         };
 
+        private static readonly Dictionary<string, string> HebrewCityToCinema = new Dictionary<string, string>
+        {
+            { "אשדוד", "Ashdod" },
+            { "אשקלון", "Ashkelon" },
+            { "כרמיאל", "Carmiel" },
+            { "חיפה", "Haifa" },
+            { "כפרסבא", "KfarSaba" },
+            { "קריון", "Kiryon" },
+            { "קריתביאליק", "Kiryon" },
+            { "מודיעין", "Modiin" },
+            { "נהריה", "Nahariya" },
+            { "נהרייה", "Nahariya" },
+            { "פתחתקווה", "PetahTikva" },
+            { "פתחתקוה", "PetahTikva" },
+            { "רחובות", "Rehovot" }
+        };
+
         public static PredictionResult Predict(PredictionRequest req, MapiService mapiService, PythonPredictorClient predictor)
         {
             if (req == null)
@@ -113,20 +130,44 @@ namespace CinemaSyncServer.Models
             return p;
         }
 
+        private static string Normalize(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return "";
+            return s.Replace(" ", "")
+                    .Replace("-", "")
+                    .Replace("'", "")
+                    .Replace("’", "")
+                    .Replace(".", "")
+                    .ToLowerInvariant();
+        }
+
         private static string MapBranchToCinema(Branch branch)
         {
-            string city = branch.City ?? "";
+            string cityNorm = Normalize(branch.City ?? "");
+            string nameNorm = Normalize(branch.BranchName ?? "");
+
             for (int i = 0; i < ValidCinemas.Length; i++)
             {
-                if (city.Equals(ValidCinemas[i], StringComparison.OrdinalIgnoreCase))
+                if (cityNorm == Normalize(ValidCinemas[i]))
                     return ValidCinemas[i];
             }
 
-            string branchName = branch.BranchName ?? "";
+            foreach (KeyValuePair<string, string> kv in HebrewCityToCinema)
+            {
+                if (cityNorm == kv.Key)
+                    return kv.Value;
+            }
+
             for (int i = 0; i < ValidCinemas.Length; i++)
             {
-                if (branchName.IndexOf(ValidCinemas[i], StringComparison.OrdinalIgnoreCase) >= 0)
+                if (nameNorm.IndexOf(Normalize(ValidCinemas[i]), StringComparison.Ordinal) >= 0)
                     return ValidCinemas[i];
+            }
+
+            foreach (KeyValuePair<string, string> kv in HebrewCityToCinema)
+            {
+                if (nameNorm.IndexOf(kv.Key, StringComparison.Ordinal) >= 0)
+                    return kv.Value;
             }
 
             return "Haifa";

@@ -282,3 +282,57 @@ BEGIN
     WHERE VenueId = @VenueId;
 END;
 GO
+
+-- =========================================================
+-- Inventory Counts
+-- Core SPs (GetByBranch / Create / SetPrimary / Items_Insert / Items_GetByCount)
+-- are maintained in the shared DB by the team - not duplicated here.
+-- =========================================================
+
+CREATE OR ALTER PROCEDURE SP_InventoryCounts_UnsetPrimary
+    @CountId    INT,
+    @BranchCode INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    UPDATE InventoryCounts
+    SET IsPrimary = 0
+    WHERE CountId = @CountId AND BranchCode = @BranchCode;
+
+    SELECT @@ROWCOUNT AS RowsAffected;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE SP_InventoryCountItems_Upsert
+    @CountId      INT,
+    @ProductId    INT,
+    @StockAtCount INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    IF EXISTS (SELECT 1 FROM InventoryCountItems WHERE CountId = @CountId AND ProductId = @ProductId)
+        UPDATE InventoryCountItems
+        SET StockAtCount = @StockAtCount
+        WHERE CountId = @CountId AND ProductId = @ProductId;
+    ELSE
+        INSERT INTO InventoryCountItems (CountId, ProductId, StockAtCount)
+        VALUES (@CountId, @ProductId, @StockAtCount);
+
+    SELECT @@ROWCOUNT AS RowsAffected;
+END;
+GO
+
+CREATE OR ALTER PROCEDURE SP_InventoryCounts_Delete
+    @CountId INT
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DELETE FROM InventoryCountItems WHERE CountId = @CountId;
+    DELETE FROM InventoryCounts     WHERE CountId = @CountId;
+
+    SELECT @@ROWCOUNT AS RowsAffected;
+END;
+GO

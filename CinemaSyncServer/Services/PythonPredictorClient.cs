@@ -11,12 +11,29 @@ namespace CinemaSyncServer.Services
     {
         private const string PredictUrl = "http://127.0.0.1:8000/predict";
         private const string PredictBatchUrl = "http://127.0.0.1:8000/predict-batch";
+        private const string HealthUrl = "http://127.0.0.1:8000/health";
 
         private readonly IHttpClientFactory httpClientFactory;
 
         public PythonPredictorClient(IHttpClientFactory httpClientFactory)
         {
             this.httpClientFactory = httpClientFactory;
+        }
+
+        public bool IsReady()
+        {
+            try
+            {
+                HttpClient client = httpClientFactory.CreateClient();
+                client.Timeout = TimeSpan.FromSeconds(4);
+                HttpResponseMessage response = client.GetAsync(HealthUrl).Result;
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception)
+            {
+                // Service unreachable (not started yet, or model still loading) -> not ready.
+                return false;
+            }
         }
 
         public PythonPredictionResponse Predict(PythonPredictionPayload payload)
