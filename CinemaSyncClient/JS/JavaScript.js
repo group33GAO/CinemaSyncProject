@@ -63,3 +63,30 @@ function canAccessModule(role, moduleName) {
     }
     return perms[moduleName] === true;
 }
+
+function applyTheme(theme) {
+    if (theme === 'light') {
+        $('body').addClass('light-mode');
+        $('#themeIcon').removeClass('fa-sun').addClass('fa-moon');
+    } else {
+        $('body').removeClass('light-mode');
+        $('#themeIcon').removeClass('fa-moon').addClass('fa-sun');
+    }
+}
+
+function toggleTheme() {
+    var current = localStorage.getItem('cinemasync_theme') || 'dark';
+    var next = (current === 'dark') ? 'light' : 'dark';
+    localStorage.setItem('cinemasync_theme', next);
+    applyTheme(next);
+}
+
+function initThemeToggle() {
+    var saved = localStorage.getItem('cinemasync_theme') || 'dark';
+    applyTheme(saved);
+    $('#btnThemeToggle').on('click', toggleTheme);
+}
+
+$(document).ready(function () {
+    initThemeToggle();
+});

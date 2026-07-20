@@ -28,7 +28,7 @@ function doLogin() {
     $("#loginError").addClass("d-none").text("");
 
     if (!email || !password) {
-        showLoginError("Please enter both email and password.");
+        showLoginError("יש להזין אימייל וסיסמה.");
         return;
     }
 
@@ -41,7 +41,7 @@ function doLogin() {
 function onLoginSuccess(user) {
     if (!user) {
         setLoginLoading(false);
-        showLoginError("Invalid email or password.");
+        showLoginError("אימייל או סיסמה שגויים.");
         return;
     }
     setCurrentUser(user);
@@ -50,7 +50,7 @@ function onLoginSuccess(user) {
 
 function onLoginError(xhr) {
     setLoginLoading(false);
-    showLoginError(extractServerMessage(xhr, "Login failed."));
+    showLoginError(extractServerMessage(xhr, "ההתחברות נכשלה."));
 }
 
 function showLoginError(msg) {
@@ -60,7 +60,7 @@ function showLoginError(msg) {
 function setLoginLoading(isLoading) {
     var btn = $("#btnLogin");
     if (isLoading) {
-        btn.prop("disabled", true).data("original", btn.html()).html('<span class="spinner-border spinner-border-sm"></span> Loading...');
+        btn.prop("disabled", true).data("original", btn.html()).html('<span class="spinner-border spinner-border-sm"></span> טוען...');
         $("#emailInput").prop("disabled", true);
         $("#passwordInput").prop("disabled", true);
     } else {
@@ -81,6 +81,9 @@ function extractServerMessage(xhr, fallback) {
     if (xhr.responseJSON) {
         if (typeof xhr.responseJSON === "string") {
             return xhr.responseJSON;
+        }
+        if (xhr.responseJSON.detail) {
+            return xhr.responseJSON.detail;
         }
         if (xhr.responseJSON.message) {
             return xhr.responseJSON.message;

@@ -132,6 +132,9 @@ function extractServerMessage(xhr, fallback) {
         if (typeof xhr.responseJSON === "string") {
             return xhr.responseJSON;
         }
+        if (xhr.responseJSON.detail) {
+            return xhr.responseJSON.detail;
+        }
         if (xhr.responseJSON.message) {
             return xhr.responseJSON.message;
         }

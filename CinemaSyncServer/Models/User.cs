@@ -1,6 +1,7 @@
 ﻿using CinemaSyncServer.DAL;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -90,20 +91,21 @@ namespace CinemaSyncServer.Models
             return newUserId;
         }
 
+        [DebuggerNonUserCode]
         public static User Login(string email, string plainPassword)
         {
             if (string.IsNullOrWhiteSpace(email))
-                throw new Exception("Email is required");
+                throw new Exception("יש להזין אימייל");
 
             if (string.IsNullOrWhiteSpace(plainPassword))
-                throw new Exception("Password is required");
+                throw new Exception("יש להזין סיסמה");
 
             string hash = HashPassword(plainPassword);
             DBservices db = new DBservices();
             User user = db.LoginUser(email, hash);
 
             if (user == null)
-                throw new Exception("Invalid email or password");
+                throw new Exception("אימייל או סיסמה שגויים");
 
             return user;
         }

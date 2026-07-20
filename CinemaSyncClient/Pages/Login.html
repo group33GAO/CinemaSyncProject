@@ -12,6 +12,34 @@
   </head>
 
   <body class="bg-dark text-light">
+    <div class="card bg-surface border-0 p-4 demo-panel-corner" dir="rtl">
+      <div class="d-flex align-items-center gap-2 mb-3">
+        <div class="icon-box bg-green-soft">
+          <i class="fa-solid fa-hand-sparkles"></i>
+        </div>
+        <h5 class="text-white fw-bold mb-0">שלום!</h5>
+      </div>
+      <p class="text-muted small">
+        מוזמנים להתחבר למערכת עם משתמש הדמו שלנו כדי להתרשם מהיכולות של CinemaSync.
+      </p>
+
+      <div class="mb-2">
+        <label class="form-label small text-muted d-block mb-1">מייל לדוגמה</label>
+        <div class="barcode-display justify-content-start">
+          <i class="fa-solid fa-envelope"></i>
+          <span class="barcode-value">demo@cinemasync.com</span>
+        </div>
+      </div>
+
+      <div class="mb-2">
+        <label class="form-label small text-muted d-block mb-1">סיסמה לדוגמה</label>
+        <div class="barcode-display justify-content-start">
+          <i class="fa-solid fa-lock"></i>
+          <span class="barcode-value">Demo1234</span>
+        </div>
+      </div>
+    </div>
+
     <section id="loginScreen" class="screen active-screen text-center mt-5">
       <div class="mb-5">
         <div class="logo-circle mx-auto mb-3">
@@ -23,36 +51,32 @@
         <p class="text-muted small letter-spacing-2">OPERATIONS. OPTIMIZED.</p>
       </div>
 
-      <div class="card bg-surface border-0 p-4 mx-auto" style="max-width: 350px">
-        <h4 class="text-white mb-4">Welcome Back</h4>
+      <div class="card bg-surface border-0 p-4 mx-auto" style="max-width: 350px" dir="rtl">
+        <h4 class="text-white mb-4">ברוכים השבים</h4>
 
         <div id="loginError" class="alert alert-danger d-none p-2 small"></div>
 
-        <div class="mb-3 text-start">
-          <label class="form-label small text-muted">Email</label>
-          <div class="input-group">
-            <span class="input-group-text bg-dark border-secondary text-muted">
-              <i class="fa-solid fa-envelope"></i>
-            </span>
-            <input type="email" id="emailInput" class="form-control bg-dark border-secondary text-white" placeholder="Type your Email here" />
+        <div class="mb-3 text-end">
+          <label class="form-label small text-muted">אימייל</label>
+          <div class="login-field">
+            <input type="email" id="emailInput" class="form-control bg-dark border-secondary text-white" placeholder="הזן את האימייל שלך" dir="rtl" />
+            <i class="fa-solid fa-envelope login-field-icon"></i>
           </div>
         </div>
 
-        <div class="mb-4 text-start">
-          <label class="form-label small text-muted">Password</label>
-          <div class="input-group">
-            <span class="input-group-text bg-dark border-secondary text-muted">
-              <i class="fa-solid fa-lock"></i>
-            </span>
-            <input type="password" id="passwordInput" class="form-control bg-dark border-secondary text-white" placeholder="Type your password here" />
+        <div class="mb-4 text-end">
+          <label class="form-label small text-muted">סיסמה</label>
+          <div class="login-field">
+            <input type="password" id="passwordInput" class="form-control bg-dark border-secondary text-white" placeholder="הזן את הסיסמה שלך" dir="rtl" />
+            <i class="fa-solid fa-lock login-field-icon"></i>
           </div>
         </div>
 
-        <button class="btn btn-teal w-100 fw-bold py-2" id="btnLogin" aria-label="Log In">LOG IN</button>
+        <button class="btn btn-teal w-100 fw-bold py-2" id="btnLogin" aria-label="Log In">התחברות</button>
 
         <div class="text-center mt-3">
-          <span class="small text-muted">Don't have an account? </span>
-          <a href="Register.html" class="text-teal small fw-bold">Register</a>
+          <span class="small text-muted">אין לך חשבון? </span>
+          <a href="Register.html" class="text-teal small fw-bold">הרשמה</a>
         </div>
       </div>
     </section>

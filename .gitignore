@@ -31,3 +31,8 @@ Thumbs.db
 
 # ===== Database / SQLite =====
 *.sqlite
+/CinemaSyncServer/bin
+/CinemaSyncServer/obj
+
+# ===== Claude Code project instructions (not for submission) =====
+CLAUDE.md
